@@ -1,22 +1,187 @@
 .App {
   text-align: center;
+  display: grid;
+  grid-template-columns: 80% 20%;
+  grid-template-rows: 15% 5% 80%;
+  background-color: black;
+  height: 100vh;
 }
 
-.App-logo {
-  height: 40vmin;
+.ParallelCoordinate {
+	position: relative;
+	background-color: teal;
+	grid-column-start: 1;
+	grid-column-end: span 1;
+	grid-row-start: 1;
+	grid-row-end: span 2;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.GridSelector {
+  background-color: orange;
+  grid-column-start: 2;
+  grid-column-end: span 2;
+  grid-row-start: 1;
+  grid-row-end: span 1;
+  overflow-y: scroll;
 }
 
-.App-link {
-  color: #09d3ac;
+.TemplateButton {
+  background-color: green;
+  grid-column-start: 2;
+  grid-column-end: span 2;
+  grid-row-start: 2;
+  grid-row-end: 2;
+}
+
+.DataViewGrid {
+  background-color: red;
+  grid-column-start: 1;
+  grid-column-end: span 2;
+  grid-row-start: 3;
+  grid-row-end: span 3;
+}
+
+.DataView {
+  background-color: blue;
+  height: 20%;
+  width: 80%;
+  margin: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.OneAndTwo { 
+  background-color: purple;
+  display: grid;
+  width: auto;
+  height: 100%;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+}
+
+.OneAndTwo .one {
+  background-color: yellow;
+  grid-column-start: 1;
+  grid-column-end: span 2;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  margin: 10px;
+}
+
+.OneAndTwo .two {
+  background-color: yellow;
+  grid-column-start: 1;
+  grid-column-end: span 1;
+  grid-row-start: 2;
+  grid-row-end: 2;
+  margin: 10px;
+}
+
+.OneAndTwo .three {
+  background-color: yellow;
+  grid-column-start: 2;
+  grid-column-end: span 2;
+  grid-row-start: 2;
+  grid-row-end: 2;
+  margin: 10px;
+}
+
+.OneAndOneHorizontal {
+  background-color: purple;
+  display: grid;
+  width: auto;
+  height: 100%;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+}
+
+.OneAndOneHorizontal .one {
+  background-color: yellow;
+  grid-column-start: 1;
+  grid-column-end: span 2;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  margin: 10px;
+}
+
+.OneAndOneHorizontal .two {
+  background-color: yellow;
+  grid-column-start: 1;
+  grid-column-end: span 2;
+  grid-row-start: 2;
+  grid-row-end: 2;
+  margin: 10px;
+}
+
+.OneAndOneVertical {
+  background-color: purple;
+  display: grid;
+  width: auto;
+  height: 100%;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+}
+
+.OneAndOneVertical .one {
+  background-color: yellow;
+  grid-column-start: 1;
+  grid-column-end: span 1;
+  grid-row-start: 1;
+  grid-row-end: span 2;
+  margin: 10px;
+}
+
+.OneAndOneVertical .two {
+  background-color: yellow;
+  grid-column-start: 2;
+  grid-column-end: span 2;
+  grid-row-start: 1;
+  grid-row-end: span 2;
+  margin: 10px;
+}
+
+.Quads {
+  background-color: purple;
+  display: grid;
+  width: auto;
+  height: 100%;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+}
+
+.Quads .one {
+  background-color: yellow;
+  grid-column-start: 1;
+  grid-column-end: span 1;
+  grid-row-start: 1;
+  grid-row-end: span 1;
+  margin: 10px;
+}
+
+.Quads .two {
+  background-color: yellow;
+  grid-column-start: 2;
+  grid-column-end: span 2;
+  grid-row-start: 1;
+  grid-row-end: span 1;
+  margin: 10px;
+}
+
+.Quads .three {
+  background-color: yellow;
+  grid-column-start: 1;
+  grid-column-end: span 1;
+  grid-row-start: 2;
+  grid-row-end: span 2;
+  margin: 10px;
+}
+
+.Quads .four {
+  background-color: yellow;
+  grid-column-start: 2;
+  grid-column-end: span 2;
+  grid-row-start: 2;
+  grid-row-end: span 2;
+  margin: 10px;
 }

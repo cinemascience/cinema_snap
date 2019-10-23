@@ -5,22 +5,98 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+	  <ParallelCoordinateView />
+	  <GridSelector />
+	  <DataViewGrid />
+	  <GridTemplateButton />
     </div>
   );
+}
+
+function ParallelCoordinateView() {
+	return (
+		<div className="ParallelCoordinate">
+		ParallelCoordinate
+		</div> 
+	);
+}
+
+function GridSelector() {
+	return (
+		<div className="GridSelector">
+		<DataView />
+		<DataView />
+		<DataView />
+		<DataView />
+		<DataView />
+		<DataView />
+		<DataView />
+		<DataView />
+		</div>
+	);
+}
+
+function GridTemplateButton() {
+	return (
+		<div className="TemplateButton">
+		TemplateButton
+		</div>
+	);
+}
+
+function DataViewGrid() {
+	return (
+		<div className="DataViewGrid">
+		<GridQuads/>
+		</div>
+	);
+}
+
+function DataView() {
+	return (
+		<div className="DataView">
+		DataView
+		</div>
+	);
+}
+
+function GridOneAndTwo() {
+	return (
+		<div className="OneAndTwo">
+			<div className="one"></div>
+			<div className="two"></div>
+			<div className="three"></div>
+		</div>
+	);
+}
+
+function GridOneAndOneHorizontal() {
+	return (
+		<div className="OneAndOneHorizontal">
+			<div className="one"></div>
+			<div className="two"></div>
+		</div>
+	);
+}
+
+function GridOneAndOneVertical() {
+	return (
+		<div className="OneAndOneVertical">
+			<div className="one"></div>
+			<div className="two"></div>
+		</div>
+	);
+}
+
+function GridQuads() {
+	return (
+		<div className="Quads">
+			<div className="one"></div>
+			<div className="two"></div>
+			<div className="three"></div>
+			<div className="four"></div>
+		</div>
+	);
 }
 
 export default App;
