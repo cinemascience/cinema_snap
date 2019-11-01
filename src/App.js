@@ -1,6 +1,8 @@
 import React from 'react';
 import { DndProvider } from 'react-dnd'
 import { useDrag } from 'react-dnd'
+import { useDrop } from 'react-dnd'
+import { dropped } from './DropLogic'
 import HTML5Backend from 'react-dnd-html5-backend'
 import ItemTypes from './ItemTypes'
 import logo from './logo.svg';
@@ -83,13 +85,28 @@ function DataView() {
 	);
 }
 
-function DropView() {
+function DropView(cls) {
 	
-	return (
-		<div>
+	const [{ isOver }, drop] = useDrop({
+		accept: ItemTypes.DATAVIEW,
+		drop: () => dropped(),
+		collect: monitor => ({
+			isOver: !!monitor.isOver()
+		}),
+	})
 
-		</div>
+	return (
+	<div
+	ref={drop}
+	style={{
+		backgroundColor: isOver ? "green" : "cyan",
+	}}
+	className={cls}
+	>
+
+	</div>
 	);
+	
 }
 
 function GridOneAndTwo() {
@@ -123,10 +140,10 @@ function GridOneAndOneVertical() {
 function GridQuads() {
 	return (
 		<div className="Quads">
-			<div className="one"></div>
-			<div className="two"></div>
-			<div className="three"></div>
-			<div className="four"></div>
+			<DropView cls="one"></DropView>
+			<DropView cls="two"></DropView>
+			<DropView cls="three"></DropView>
+			<DropView cls="four"></DropView>
 		</div>
 	);
 }
