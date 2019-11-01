@@ -1,18 +1,27 @@
 import React from 'react';
+import { DndProvider } from 'react-dnd'
+import { useDrag } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+import ItemTypes from './ItemTypes'
 import logo from './logo.svg';
 import './App.css';
 
+
 function App() {
   return (
-    <div className="App">
-	  <ParallelCoordinateView />
-	  <GridSelector />
-	  <DataViewGrid />
-	  <GridTemplateButton />
-    </div>
+	    <div className="App">
+	  	{/* DndProvider specifies what backend the drag and drop code should use*/}
+		<DndProvider backend={HTML5Backend}>
+		  <ParallelCoordinateView />
+		  <GridSelector />
+		  <DataViewGrid />
+		  <GridTemplateButton />
+		</DndProvider>
+	    </div>
   );
 }
 
+{/* The Parallel Coordinate Chart */}
 function ParallelCoordinateView() {
 	return (
 		<div className="ParallelCoordinate">
@@ -21,6 +30,7 @@ function ParallelCoordinateView() {
 	);
 }
 
+{/* The data view selector box */} 
 function GridSelector() {
 	return (
 		<div className="GridSelector">
@@ -36,6 +46,7 @@ function GridSelector() {
 	);
 }
 
+{/* Drop down button to select different templates */}
 function GridTemplateButton() {
 	return (
 		<div className="TemplateButton">
@@ -43,6 +54,7 @@ function GridTemplateButton() {
 		</div>
 	);
 }
+
 
 function DataViewGrid() {
 	return (
@@ -53,9 +65,29 @@ function DataViewGrid() {
 }
 
 function DataView() {
+	const [{ isDragging }, drag] = useDrag({
+		item: { type: ItemTypes.DATAVIEW },
+		collect: monitor => ({
+			isDragging: !!monitor.isDragging(),
+		}),
+	})
 	return (
-		<div className="DataView">
+		<div className="DataView"
+		ref={drag}
+		style={{
+			opacity: isDragging ? 0.5 : 1,
+		}}
+		>
 		DataView
+		</div>
+	);
+}
+
+function DropView() {
+	
+	return (
+		<div>
+
 		</div>
 	);
 }
