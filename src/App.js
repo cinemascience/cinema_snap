@@ -85,7 +85,7 @@ function DataView() {
 	);
 }
 
-function DropView(cls) {
+function DropView(props) {
 	
 	const [{ isOver }, drop] = useDrop({
 		accept: ItemTypes.DATAVIEW,
@@ -101,7 +101,7 @@ function DropView(cls) {
 	style={{
 		backgroundColor: isOver ? "green" : "cyan",
 	}}
-	className={cls}
+	className={props.cls}
 	>
 
 	</div>
