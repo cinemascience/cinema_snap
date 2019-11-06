@@ -36,14 +36,12 @@ function ParallelCoordinateView() {
 function GridSelector() {
 	return (
 		<div className="GridSelector">
-		<DataView />
-		<DataView />
-		<DataView />
-		<DataView />
-		<DataView />
-		<DataView />
-		<DataView />
-		<DataView />
+		<DataView type="parallelCoordinate" name="Parallel Coordinates"/>
+		<DataView type="xyGraph" name="Intensity VS Angle"/>
+		<DataView type="image" name="XRD Image"/>
+		<DataView type="pvChart" name="Pressure VS Volume"/>
+		<DataView type="latticeVSTime" name="Lattice VS Time"/>
+		<DataView type="contourDiagram" name="Contour Diagram"/>
 		</div>
 	);
 }
@@ -66,9 +64,9 @@ function DataViewGrid() {
 	);
 }
 
-function DataView() {
+function DataView(props) {
 	const [{ isDragging }, drag] = useDrag({
-		item: { type: ItemTypes.DATAVIEW },
+		item: { type: props.type },
 		collect: monitor => ({
 			isDragging: !!monitor.isDragging(),
 		}),
@@ -80,7 +78,7 @@ function DataView() {
 			opacity: isDragging ? 0.5 : 1,
 		}}
 		>
-		DataView
+		{props.name}
 		</div>
 	);
 }
@@ -88,8 +86,13 @@ function DataView() {
 function DropView(props) {
 	
 	const [{ isOver }, drop] = useDrop({
-		accept: ItemTypes.DATAVIEW,
-		drop: () => dropped(),
+		accept: [ItemTypes.PARALLELCOORD, 
+			ItemTypes.XYGRAPH,
+			ItemTypes.IMAGE,
+			ItemTypes.PVCHART,
+			ItemTypes.LATTICEVSTIME,
+			ItemTypes.CONTOURDIAGRAM],
+		drop: item => dropped(item, props.cls),
 		collect: monitor => ({
 			isOver: !!monitor.isOver()
 		}),
@@ -103,41 +106,41 @@ function DropView(props) {
 	}}
 	className={props.cls}
 	>
-
+	
 	</div>
 	);
 	
 }
 
-function GridOneAndTwo() {
+function GridOneAndTwo(props) {
 	return (
 		<div className="OneAndTwo">
-			<div className="one"></div>
-			<div className="two"></div>
-			<div className="three"></div>
+			<DropView cls="one"></DropView>
+			<DropView cls="two"></DropView>
+			<DropView cls="three"></DropView>
 		</div>
 	);
 }
 
-function GridOneAndOneHorizontal() {
+function GridOneAndOneHorizontal(props) {
 	return (
 		<div className="OneAndOneHorizontal">
-			<div className="one"></div>
-			<div className="two"></div>
+			<DropView cls="one"></DropView>
+			<DropView cls="two"></DropView>
 		</div>
 	);
 }
 
-function GridOneAndOneVertical() {
+function GridOneAndOneVertical(props) {
 	return (
 		<div className="OneAndOneVertical">
-			<div className="one"></div>
-			<div className="two"></div>
+			<DropView cls="one"></DropView>
+			<DropView cls="two"></DropView>
 		</div>
 	);
 }
 
-function GridQuads() {
+function GridQuads(props) {
 	return (
 		<div className="Quads">
 			<DropView cls="one"></DropView>
