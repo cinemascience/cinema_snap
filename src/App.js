@@ -9,18 +9,44 @@ import logo from './logo.svg';
 import './App.css';
 
 
-function App() {
-  return (
+class App extends React.Component {
+  constructor(props) {
+	super(props);
+	this.state = {
+		selectedData : null, 
+		selectedViews : {}
+	};
+
+	//Bind the "this" context to the handler functions
+	this.updateSelectedViews = this.updateSelectedViews.bind(this);
+	this.updateSelectedData = this.updateSelectedData.bind(this);
+  }
+
+  updateSelectedViews(views) {
+	this.setState({
+		selectedViews : views
+	});
+  }
+
+  updateSelectedData(data) {
+  	this.setState({
+		selectedData : data
+	});
+  }
+
+  render () {
+	    return ( 
 	    <div className="App">
 	  	{/* DndProvider specifies what backend the drag and drop code should use*/}
 		<DndProvider backend={HTML5Backend}>
 		  <ParallelCoordinateView />
 		  <GridSelector />
-		  <DataViewGrid />
+		  <DataViewGrid viewUpdater={this.updateSelectedViews} selectedViews={this.state.selectedViews}/>
 		  <GridTemplateButton />
 		</DndProvider>
 	    </div>
-  );
+	    );
+  };
 }
 
 {/* The Parallel Coordinate Chart */}
@@ -56,10 +82,10 @@ function GridTemplateButton() {
 }
 
 
-function DataViewGrid() {
+function DataViewGrid(props) {
 	return (
 		<div className="DataViewGrid">
-		<GridQuads/>
+		<GridQuads selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}/>
 		</div>
 	);
 }
@@ -92,7 +118,7 @@ function DropView(props) {
 			ItemTypes.PVCHART,
 			ItemTypes.LATTICEVSTIME,
 			ItemTypes.CONTOURDIAGRAM],
-		drop: item => dropped(item, props.cls),
+		drop: item => dropped(item, props.cls, props.viewUpdater, props.selectedViews),
 		collect: monitor => ({
 			isOver: !!monitor.isOver()
 		}),
@@ -115,9 +141,9 @@ function DropView(props) {
 function GridOneAndTwo(props) {
 	return (
 		<div className="OneAndTwo">
-			<DropView cls="one"></DropView>
-			<DropView cls="two"></DropView>
-			<DropView cls="three"></DropView>
+			<DropView cls="one" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="two" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="three" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
 }
@@ -143,10 +169,10 @@ function GridOneAndOneVertical(props) {
 function GridQuads(props) {
 	return (
 		<div className="Quads">
-			<DropView cls="one"></DropView>
-			<DropView cls="two"></DropView>
-			<DropView cls="three"></DropView>
-			<DropView cls="four"></DropView>
+			<DropView cls="one" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="two" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="three" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="four" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
 }
