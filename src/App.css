@@ -2,7 +2,7 @@
   text-align: center;
   display: grid;
   grid-template-columns: 80% 20%;
-  grid-template-rows: 15% 5% 80%;
+  grid-template-rows: 17% 3% 80%;
   background-color: black;
   height: 100vh;
 }
@@ -13,7 +13,16 @@
 	grid-column-start: 1;
 	grid-column-end: span 1;
 	grid-row-start: 1;
-	grid-row-end: span 2;
+	grid-row-end: span 1;
+}
+
+.FileReader {
+	position: relative;
+	background-color: brown;
+	grid-column-start: 1;
+	grid-column-end: span 1;
+	grid-row-start: 2;
+	grid-row-end: span 1;
 }
 
 .GridSelector {

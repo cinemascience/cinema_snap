@@ -5,7 +5,7 @@ import { useDrop } from 'react-dnd'
 import { dropped } from './DropLogic'
 import HTML5Backend from 'react-dnd-html5-backend'
 import ItemTypes from './ItemTypes'
-import logo from './logo.svg';
+import FileReader from './FileReader';
 import './App.css';
 
 
@@ -14,32 +14,46 @@ class App extends React.Component {
 	super(props);
 	this.state = {
 		selectedData : null, 
-		selectedViews : {}
+		selectedViews : {},
+		csvData: undefined,
 	};
 
 	//Bind the "this" context to the handler functions
 	this.updateSelectedViews = this.updateSelectedViews.bind(this);
 	this.updateSelectedData = this.updateSelectedData.bind(this);
+	this.updateSelectedCSV = this.updateSelectedCSV.bind(this);
   }
 
+  //Handler function for the currently selected views
   updateSelectedViews(views) {
 	this.setState({
 		selectedViews : views
 	});
   }
 
+  //Handler function for the currently selected data point
   updateSelectedData(data) {
   	this.setState({
 		selectedData : data
 	});
   }
 
+  //Handler function for the currently selected data.csv file
+  updateSelectedCSV(data) {
+	this.setState({
+		csvData : data
+	});
+	console.log("App should have the csv data now");
+  }
+
+  //This is the primary rendering function for the entire app, everything else cascades from here.
   render () {
 	    return ( 
 	    <div className="App">
 	  	{/* DndProvider specifies what backend the drag and drop code should use*/}
 		<DndProvider backend={HTML5Backend}>
 		  <ParallelCoordinateView />
+		  <FileReader dataUpdater={this.updateSelectedCSV}/>
 		  <GridSelector />
 		  <DataViewGrid viewUpdater={this.updateSelectedViews} selectedViews={this.state.selectedViews}/>
 		  <GridTemplateButton />
@@ -132,7 +146,7 @@ function DropView(props) {
 	}}
 	className={props.cls}
 	>
-	
+		{props.selectedViews[props.cls]}
 	</div>
 	);
 	
@@ -151,8 +165,8 @@ function GridOneAndTwo(props) {
 function GridOneAndOneHorizontal(props) {
 	return (
 		<div className="OneAndOneHorizontal">
-			<DropView cls="one"></DropView>
-			<DropView cls="two"></DropView>
+			<DropView cls="one" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="two" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
 }
@@ -160,8 +174,8 @@ function GridOneAndOneHorizontal(props) {
 function GridOneAndOneVertical(props) {
 	return (
 		<div className="OneAndOneVertical">
-			<DropView cls="one"></DropView>
-			<DropView cls="two"></DropView>
+			<DropView cls="one" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="two" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
 }
