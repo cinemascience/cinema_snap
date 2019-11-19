@@ -12,6 +12,7 @@ import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import FileReader from './FileReader';
+import Papa from 'papaparse';
 import './App.css';
 
 
@@ -32,6 +33,7 @@ class App extends React.Component {
 	this.updateSelectedCSV = this.updateSelectedCSV.bind(this);
 	this.updateAddress = this.updateAddress.bind(this);
 	this.updateSelectedLayout = this.updateSelectedLayout.bind(this);
+	this.connectToAddress = this.connectToAddress.bind(this);
   }
 
   //Handler function for the currently selected views
@@ -57,9 +59,9 @@ class App extends React.Component {
   }
 
   //Handler function for the currently selected data.csv file
-  updateSelectedCSV(data) {
+  updateSelectedCSV(result) {
 	this.setState({
-		csvData : data
+		csvData : result.data
 	});
   }
 
@@ -68,6 +70,16 @@ class App extends React.Component {
 	this.setState({
 		connectAddress : event.target.value,
 	});
+  }
+
+  //Callback to activate the connection
+  connectToAddress(event) {
+	Papa.parse("http://" + this.state.connectAddress + "/data.csv", {
+		download: true,
+		header: true,
+		complete: this.updateSelectedCSV
+	});
+	
   }
 
   //This is the primary rendering function for the entire app, everything else cascades from here.
@@ -82,7 +94,7 @@ class App extends React.Component {
 	    		<Form.Control size="sm" type="text" placeholder="Enter Database Serving Address"
 		    		onChange={this.updateAddress}/>
 		    	<InputGroup.Append>
-			    <Button variant="primary" size="sm" type="button">
+			    <Button variant="primary" size="sm" type="button" onClick={this.connectToAddress}>
 				Connect
 			    </Button>
 		        </InputGroup.Append>
