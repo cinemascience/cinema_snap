@@ -3,6 +3,7 @@ import Papa from 'papaparse';
 
 //I got this file reader from:
 //https://stackoverflow.com/questions/44769051/how-to-upload-and-read-csv-files-in-react-js
+//Then I made some changes to get it to interact with the state of App.js
 
 class FileReader extends React.Component {
   constructor() {

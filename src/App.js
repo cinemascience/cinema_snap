@@ -5,6 +5,12 @@ import { useDrop } from 'react-dnd'
 import { dropped } from './DropLogic'
 import HTML5Backend from 'react-dnd-html5-backend'
 import ItemTypes from './ItemTypes'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Button from 'react-bootstrap/Button';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown';
 import FileReader from './FileReader';
 import './App.css';
 
@@ -15,13 +21,17 @@ class App extends React.Component {
 	this.state = {
 		selectedData : null, 
 		selectedViews : {},
+		selectedLayout : undefined,
 		csvData: undefined,
+		connectAddress: undefined,
 	};
 
 	//Bind the "this" context to the handler functions
 	this.updateSelectedViews = this.updateSelectedViews.bind(this);
 	this.updateSelectedData = this.updateSelectedData.bind(this);
 	this.updateSelectedCSV = this.updateSelectedCSV.bind(this);
+	this.updateAddress = this.updateAddress.bind(this);
+	this.updateSelectedLayout = this.updateSelectedLayout.bind(this);
   }
 
   //Handler function for the currently selected views
@@ -38,12 +48,26 @@ class App extends React.Component {
 	});
   }
 
+
+  //Handler function for the currently selected Layout
+  updateSelectedLayout(event) {
+  	this.setState({
+		selectedLayout : event.target.name
+	});
+  }
+
   //Handler function for the currently selected data.csv file
   updateSelectedCSV(data) {
 	this.setState({
 		csvData : data
 	});
-	console.log("App should have the csv data now");
+  }
+
+  //Handler function for the currently selected address
+  updateAddress(event) {
+	this.setState({
+		connectAddress : event.target.value,
+	});
   }
 
   //This is the primary rendering function for the entire app, everything else cascades from here.
@@ -53,10 +77,24 @@ class App extends React.Component {
 	  	{/* DndProvider specifies what backend the drag and drop code should use*/}
 		<DndProvider backend={HTML5Backend}>
 		  <ParallelCoordinateView />
-		  <FileReader dataUpdater={this.updateSelectedCSV}/>
+	          <div class="Address">
+		    <InputGroup className="mb-3">
+	    		<Form.Control size="sm" type="text" placeholder="Enter Database Serving Address"
+		    		onChange={this.updateAddress}/>
+		    	<InputGroup.Append>
+			    <Button variant="primary" size="sm" type="button">
+				Connect
+			    </Button>
+		        </InputGroup.Append>
+		    </InputGroup>
+	         </div>
+
 		  <GridSelector />
-		  <DataViewGrid viewUpdater={this.updateSelectedViews} selectedViews={this.state.selectedViews}/>
-		  <GridTemplateButton />
+		  <DataViewGrid viewUpdater={this.updateSelectedViews}
+		    		selectedViews={this.state.selectedViews}
+		    		csvData={this.state.csvData}
+		    		selectedLayout={this.state.selectedLayout}/>
+		  <GridTemplateButton layoutUpdater={this.updateSelectedLayout}/>
 		</DndProvider>
 	    </div>
 	    );
@@ -87,21 +125,58 @@ function GridSelector() {
 }
 
 {/* Drop down button to select different templates */}
-function GridTemplateButton() {
+function GridTemplateButton(props) {
 	return (
-		<div className="TemplateButton">
-		TemplateButton
-		</div>
+		<DropdownButton id="dropdown-basic-button" title="View Selector" size="sm">
+  			<Dropdown.Item name="One and Two" onClick={props.layoutUpdater}>One and Two</Dropdown.Item>
+  			<Dropdown.Item name="One and One Horizontal" onClick={props.layoutUpdater}>One and One Horizontal</Dropdown.Item>
+  			<Dropdown.Item name="One and One Vertical" onClick={props.layoutUpdater}>One and One Vertical</Dropdown.Item>
+  			<Dropdown.Item name="Quads" onClick={props.layoutUpdater}>Quads</Dropdown.Item>
+		</DropdownButton>
 	);
 }
 
 
 function DataViewGrid(props) {
-	return (
-		<div className="DataViewGrid">
-		<GridQuads selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}/>
-		</div>
-	);
+	switch(props.selectedLayout) {
+		case 'One and Two':
+			return (
+				<div className="DataViewGrid">
+				<GridOneAndTwo 
+					selectedViews={props.selectedViews} 
+					viewUpdater={props.viewUpdater} 
+					csvData={props.csvData}/>
+				</div>
+			);
+		case 'One and One Horizontal':
+			return (
+				<div className="DataViewGrid">
+				<GridOneAndOneHorizontal
+					selectedViews={props.selectedViews} 
+					viewUpdater={props.viewUpdater} 
+					csvData={props.csvData}/>
+				</div>
+			);
+		case 'One and One Vertical':
+			return (
+				<div className="DataViewGrid">
+				<GridOneAndOneVertical
+					selectedViews={props.selectedViews} 
+					viewUpdater={props.viewUpdater} 
+					csvData={props.csvData}/>
+				</div>
+			);
+		case 'Quads':
+		default:
+			return (
+				<div className="DataViewGrid">
+				<GridQuads 
+					selectedViews={props.selectedViews} 
+					viewUpdater={props.viewUpdater} 
+					csvData={props.csvData}/>
+				</div>
+			);
+	}
 }
 
 function DataView(props) {
@@ -155,9 +230,18 @@ function DropView(props) {
 function GridOneAndTwo(props) {
 	return (
 		<div className="OneAndTwo">
-			<DropView cls="one" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="two" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="three" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="one" 
+				selectedViews={props.selectedViews}
+				csvData={props.csvData}
+				viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="two" 
+				selectedViews={props.selectedViews} 
+				csvData={props.csvData}
+				viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="three" 
+				selectedViews={props.selectedViews} 
+				csvData={props.csvData}
+				viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
 }
@@ -165,8 +249,14 @@ function GridOneAndTwo(props) {
 function GridOneAndOneHorizontal(props) {
 	return (
 		<div className="OneAndOneHorizontal">
-			<DropView cls="one" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="two" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="one" 
+				selectedViews={props.selectedViews} 
+				csvData={props.csvData}
+				viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="two" 
+				selectedViews={props.selectedViews} 
+				csvData={props.csvData}
+				viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
 }
@@ -174,8 +264,14 @@ function GridOneAndOneHorizontal(props) {
 function GridOneAndOneVertical(props) {
 	return (
 		<div className="OneAndOneVertical">
-			<DropView cls="one" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="two" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="one" 
+				selectedViews={props.selectedViews} 
+				csvData={props.csvData}
+				viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="two" 
+				selectedViews={props.selectedViews} 
+				csvData={props.csvData}
+				viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
 }
@@ -183,10 +279,22 @@ function GridOneAndOneVertical(props) {
 function GridQuads(props) {
 	return (
 		<div className="Quads">
-			<DropView cls="one" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="two" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="three" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="four" selectedViews={props.selectedViews} viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="one" 
+				selectedViews={props.selectedViews} 
+				csvData={props.csvData}
+				viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="two" 
+				selectedViews={props.selectedViews} 
+				csvData={props.csvData}
+				viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="three" 
+				selectedViews={props.selectedViews} 
+				csvData={props.csvData}
+				viewUpdater={props.viewUpdater}></DropView>
+			<DropView cls="four" 
+				selectedViews={props.selectedViews} 
+				csvData={props.csvData}
+				viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
 }

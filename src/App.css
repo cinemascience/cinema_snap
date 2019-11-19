@@ -16,7 +16,7 @@
 	grid-row-end: span 1;
 }
 
-.FileReader {
+.Address {
 	position: relative;
 	background-color: brown;
 	grid-column-start: 1;
