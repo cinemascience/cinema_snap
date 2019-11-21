@@ -20,7 +20,7 @@ class App extends React.Component {
   constructor(props) {
 	super(props);
 	this.state = {
-		selectedData : null, 
+		selectedData : 1, 
 		selectedViews : {},
 		selectedLayout : undefined,
 		csvData: undefined,
@@ -105,7 +105,9 @@ class App extends React.Component {
 		  <DataViewGrid viewUpdater={this.updateSelectedViews}
 		    		selectedViews={this.state.selectedViews}
 		    		csvData={this.state.csvData}
-		    		selectedLayout={this.state.selectedLayout}/>
+		    		selectedLayout={this.state.selectedLayout}
+		    		connectAddress={this.state.connectAddress}
+		    		selectedData={this.state.selectedData}/>
 		  <GridTemplateButton layoutUpdater={this.updateSelectedLayout}/>
 		</DndProvider>
 	    </div>
@@ -157,6 +159,8 @@ function DataViewGrid(props) {
 				<GridOneAndTwo 
 					selectedViews={props.selectedViews} 
 					viewUpdater={props.viewUpdater} 
+					selectedData={props.selectedData}
+					connectAddress={props.connectAddress}
 					csvData={props.csvData}/>
 				</div>
 			);
@@ -166,6 +170,8 @@ function DataViewGrid(props) {
 				<GridOneAndOneHorizontal
 					selectedViews={props.selectedViews} 
 					viewUpdater={props.viewUpdater} 
+					selectedData={props.selectedData}
+					connectAddress={props.connectAddress}
 					csvData={props.csvData}/>
 				</div>
 			);
@@ -175,6 +181,8 @@ function DataViewGrid(props) {
 				<GridOneAndOneVertical
 					selectedViews={props.selectedViews} 
 					viewUpdater={props.viewUpdater} 
+					selectedData={props.selectedData}
+					connectAddress={props.connectAddress}
 					csvData={props.csvData}/>
 				</div>
 			);
@@ -185,6 +193,8 @@ function DataViewGrid(props) {
 				<GridQuads 
 					selectedViews={props.selectedViews} 
 					viewUpdater={props.viewUpdater} 
+					selectedData={props.selectedData}
+					connectAddress={props.connectAddress}
 					csvData={props.csvData}/>
 				</div>
 			);
@@ -224,18 +234,37 @@ function DropView(props) {
 			isOver: !!monitor.isOver()
 		}),
 	})
-
-	return (
-	<div
-	ref={drop}
-	style={{
-		backgroundColor: isOver ? "green" : "cyan",
-	}}
-	className={props.cls}
-	>
-		{props.selectedViews[props.cls]}
-	</div>
-	);
+			
+	switch(props.selectedViews[props.cls]){
+		case "image":
+			return (
+				<div
+				ref={drop}
+				style={{
+					backgroundColor: isOver ? "green" : "cyan",
+				}}
+				className={props.cls}
+				>
+					<img src={"http://" + 
+						props.connectAddress + 
+						"/" + 
+						props.csvData[props.selectedData]["FILE_image_path"]} 
+					alt=""/>						
+				</div>
+			);
+		default:
+			return (
+				<div
+				ref={drop}
+				style={{
+					backgroundColor: isOver ? "green" : "cyan",
+				}}
+				className={props.cls}
+				>	
+					{props.selectedViews[props.cls]}
+				</div>
+			);
+	}
 	
 }
 
@@ -245,14 +274,20 @@ function GridOneAndTwo(props) {
 			<DropView cls="one" 
 				selectedViews={props.selectedViews}
 				csvData={props.csvData}
+				selectedData={props.selectedData}
+				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="two" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
+				selectedData={props.selectedData}
+				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="three" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
+				selectedData={props.selectedData}
+				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
@@ -264,10 +299,14 @@ function GridOneAndOneHorizontal(props) {
 			<DropView cls="one" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
+				selectedData={props.selectedData}
+				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="two" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
+				selectedData={props.selectedData}
+				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
@@ -279,10 +318,14 @@ function GridOneAndOneVertical(props) {
 			<DropView cls="one" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
+				selectedData={props.selectedData}
+				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="two" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
+				selectedData={props.selectedData}
+				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
@@ -294,18 +337,26 @@ function GridQuads(props) {
 			<DropView cls="one" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
+				selectedData={props.selectedData}
+				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="two" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
+				selectedData={props.selectedData}
+				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="three" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
+				selectedData={props.selectedData}
+				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="four" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
+				selectedData={props.selectedData}
+				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
