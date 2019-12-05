@@ -13,6 +13,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import FileReader from './FileReader';
 import Papa from 'papaparse';
+import Plot from 'react-plotly.js';
 import './App.css';
 
 
@@ -250,6 +251,33 @@ function DropView(props) {
 						"/" + 
 						props.csvData[props.selectedData]["FILE_image_path"]} 
 					alt=""/>						
+				</div>
+			);
+		case "xyGraph":
+			return (
+
+				<div
+				ref={drop}
+				style={{
+					backgroundColor: isOver ? "green" : "cyan",
+				}}
+				className={props.cls}
+				>
+					<Plot
+						data={[
+							{
+							x: [1, 2, 3],
+							y: [2, 6, 3],
+							type: 'scatter',
+							mode: 'lines+points',
+							marker: {color: 'red'},
+							},
+							{type: 'bar', x: [1, 2, 3], y: [2, 5, 3]},
+						     ]}
+						layout={ {title: 'A Fancy Plot', autosize: true} }
+						useResizeHandler="true"
+						style={ {height:"100%",width:"100%"} }
+					/>
 				</div>
 			);
 		default:
