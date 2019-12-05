@@ -89,7 +89,7 @@ class App extends React.Component {
 	    <div className="App">
 	  	{/* DndProvider specifies what backend the drag and drop code should use*/}
 		<DndProvider backend={HTML5Backend}>
-		  <ParallelCoordinateView />
+		  <ParallelCoordinateView csvData={this.state.csvData}/>
 	          <div class="Address">
 		    <InputGroup className="mb-3">
 	    		<Form.Control size="sm" type="text" placeholder="Enter Database Serving Address"
@@ -118,9 +118,25 @@ class App extends React.Component {
 
 {/* The Parallel Coordinate Chart */}
 function ParallelCoordinateView() {
+	var trace = {
+		type: 'parcords',
+		line: {
+			color: 'blue'
+		},
+
+		dimensions: []
+	}
 	return (
 		<div className="ParallelCoordinate">
-		ParallelCoordinate
+			<Plot
+				data={{}}
+				layout={ {title: 'Parallel Coordinate Plot',
+						autosize: true,
+						margin: {l: 50, r: 50, b: 50, t: 70, pad: 4}		
+				} }
+				useResizeHandler={true}
+				style={ {height:"100%",width:"100%"} }
+			/>
 		</div> 
 	);
 }
@@ -129,7 +145,6 @@ function ParallelCoordinateView() {
 function GridSelector() {
 	return (
 		<div className="GridSelector">
-		<DataView type="parallelCoordinate" name="Parallel Coordinates"/>
 		<DataView type="xyGraph" name="Intensity VS Angle"/>
 		<DataView type="image" name="XRD Image"/>
 		<DataView type="pvChart" name="Pressure VS Volume"/>
@@ -250,10 +265,40 @@ function DropView(props) {
 						props.connectAddress + 
 						"/" + 
 						props.csvData[props.selectedData]["FILE_image_path"]} 
-					alt=""/>						
+					alt=""/>
+					
 				</div>
 			);
 		case "xyGraph":
+			var xy_files = []
+			var data_traces = []
+			var data_revision = 0
+			for (const line in props.csvData) {
+				xy_files.push(props.csvData[line]["FILE_spectra_path"])
+			}
+			for (const file in xy_files){
+				var path = xy_files[file]
+				Papa.parse("http://" + props.connectAddress + "/" + path, {
+					download: true,
+					complete: function(results) {
+						var x_array = []
+						var y_array = []
+						for (const line in results["data"]) {
+							var point = results["data"][line][0]
+							var components = point.split("  ");
+							x_array.push(Number(components[0]));
+							y_array.push(Number(components[1]));
+						}
+						var trace = {x: x_array, y: y_array, type: 'scatter'}
+						data_traces.push(trace)
+					}
+				});
+				data_revision++;
+			}
+			
+			console.log(data_traces);
+
+
 			return (
 
 				<div
@@ -264,18 +309,13 @@ function DropView(props) {
 				className={props.cls}
 				>
 					<Plot
-						data={[
-							{
-							x: [1, 2, 3],
-							y: [2, 6, 3],
-							type: 'scatter',
-							mode: 'lines+points',
-							marker: {color: 'red'},
-							},
-							{type: 'bar', x: [1, 2, 3], y: [2, 5, 3]},
-						     ]}
-						layout={ {title: 'A Fancy Plot', autosize: true} }
-						useResizeHandler="true"
+						data={data_traces}
+						layout={ {title: 'Intensity vs. Angle plot',
+								autosize: true,
+								datarevision: data_revision,
+								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4}		
+						} }
+						useResizeHandler={true}
 						style={ {height:"100%",width:"100%"} }
 					/>
 				</div>
