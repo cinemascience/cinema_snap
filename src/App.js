@@ -14,6 +14,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import FileReader from './FileReader';
 import Papa from 'papaparse';
 import Plot from 'react-plotly.js';
+import DropView from './DropView.js';
 import './App.css';
 
 
@@ -26,6 +27,7 @@ class App extends React.Component {
 		selectedLayout : undefined,
 		csvData: undefined,
 		connectAddress: undefined,
+		dataRevision: 0,
 	};
 
 	//Bind the "this" context to the handler functions
@@ -40,7 +42,8 @@ class App extends React.Component {
   //Handler function for the currently selected views
   updateSelectedViews(views) {
 	this.setState({
-		selectedViews : views
+		selectedViews : views,
+		dataRevision : this.state.dataRevision + 1
 	});
   }
 
@@ -108,6 +111,7 @@ class App extends React.Component {
 		    		csvData={this.state.csvData}
 		    		selectedLayout={this.state.selectedLayout}
 		    		connectAddress={this.state.connectAddress}
+		    		dataRevision={this.state.dataRevision}
 		    		selectedData={this.state.selectedData}/>
 		  <GridTemplateButton layoutUpdater={this.updateSelectedLayout}/>
 		</DndProvider>
@@ -177,6 +181,7 @@ function DataViewGrid(props) {
 					viewUpdater={props.viewUpdater} 
 					selectedData={props.selectedData}
 					connectAddress={props.connectAddress}
+		    			dataRevision={props.dataRevision}
 					csvData={props.csvData}/>
 				</div>
 			);
@@ -188,6 +193,7 @@ function DataViewGrid(props) {
 					viewUpdater={props.viewUpdater} 
 					selectedData={props.selectedData}
 					connectAddress={props.connectAddress}
+		    			dataRevision={props.dataRevision}
 					csvData={props.csvData}/>
 				</div>
 			);
@@ -199,6 +205,7 @@ function DataViewGrid(props) {
 					viewUpdater={props.viewUpdater} 
 					selectedData={props.selectedData}
 					connectAddress={props.connectAddress}
+		    			dataRevision={props.dataRevision}
 					csvData={props.csvData}/>
 				</div>
 			);
@@ -211,6 +218,7 @@ function DataViewGrid(props) {
 					viewUpdater={props.viewUpdater} 
 					selectedData={props.selectedData}
 					connectAddress={props.connectAddress}
+		    			dataRevision={props.dataRevision}
 					csvData={props.csvData}/>
 				</div>
 			);
@@ -236,190 +244,6 @@ function DataView(props) {
 	);
 }
 
-function DropView(props) {
-	
-	const [{ isOver }, drop] = useDrop({
-		accept: [ItemTypes.PARALLELCOORD, 
-			ItemTypes.XYGRAPH,
-			ItemTypes.IMAGE,
-			ItemTypes.PVCHART,
-			ItemTypes.LATTICEVSTIME,
-			ItemTypes.CONTOURDIAGRAM],
-		drop: item => dropped(item, props.cls, props.viewUpdater, props.selectedViews),
-		collect: monitor => ({
-			isOver: !!monitor.isOver()
-		}),
-	})
-			
-	switch(props.selectedViews[props.cls]){
-		case "image":
-			return (
-				<div
-				ref={drop}
-				style={{
-					backgroundColor: isOver ? "green" : "cyan",
-				}}
-				className={props.cls}
-				>
-					<img src={"http://" + 
-						props.connectAddress + 
-						"/" + 
-						props.csvData[props.selectedData]["FILE_image_path"]} 
-					alt=""/>
-					
-				</div>
-			);
-		case "xyGraph":
-			var xy_files = []
-			var data_traces = []
-			var data_revision = 0
-			for (const line in props.csvData) {
-				xy_files.push(props.csvData[line]["FILE_spectra_path"])
-			}
-			for (const file in xy_files){
-				var path = xy_files[file]
-				Papa.parse("http://" + props.connectAddress + "/" + path, {
-					download: true,
-					complete: function(results) {
-						var x_array = []
-						var y_array = []
-						for (const line in results["data"]) {
-							var point = results["data"][line][0]
-							var components = point.split("  ");
-							x_array.push(Number(components[0]));
-							y_array.push(Number(components[1]));
-						}
-						var trace = {x: x_array, y: y_array, type: 'scatter'}
-						data_traces.push(trace)
-					}
-				});
-				data_revision++;
-			}
-			
-			console.log(data_traces);
-
-
-			return (
-
-				<div
-				ref={drop}
-				style={{
-					backgroundColor: isOver ? "green" : "cyan",
-				}}
-				className={props.cls}
-				>
-					<Plot
-						data={data_traces}
-						layout={ {title: 'Intensity vs. Angle plot',
-								autosize: true,
-								datarevision: data_revision,
-								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4}		
-						} }
-						useResizeHandler={true}
-						style={ {height:"100%",width:"100%"} }
-					/>
-				</div>
-			);
-		case "pvChart":
-			var data_traces = []
-			var data_revision = 0
-			Papa.parse("http://" + props.connectAddress + "/" + props.csvData[0]["FILE_pressure_path"], {
-				download: true,
-				complete: function(results) {
-					var x_array = []
-					var y_array = []
-					for (const line in results["data"]) {
-						x_array.push(Number(results["data"][line][1]));
-						y_array.push(Number(results["data"][line][2]));
-					}
-					var trace = {x: x_array, y: y_array, type: 'scatter'}
-					data_traces.push(trace)
-				}
-			});
-			data_revision++;
-			
-			console.log(data_traces);
-
-
-			return (
-
-				<div
-				ref={drop}
-				style={{
-					backgroundColor: isOver ? "green" : "cyan",
-				}}
-				className={props.cls}
-				>
-					<Plot
-						data={data_traces}
-						layout={ {title: 'Pressure vs. Volume plot',
-								autosize: true,
-								datarevision: data_revision,
-								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4}		
-						} }
-						useResizeHandler={true}
-						style={ {height:"100%",width:"100%"} }
-					/>
-				</div>
-			);
-		case "latticeVSTime":
-			var data_traces = []
-			var data_revision = 0
-			Papa.parse("http://" + props.connectAddress + "/" + props.csvData[0]["FILE_lattice_path"], {
-				download: true,
-				complete: function(results) {
-					var x_array = []
-					var y_array = []
-					for (const line in results["data"]) {
-						x_array.push(Number(results["data"][line][1]));
-						y_array.push(Number(results["data"][line][2]));
-					}
-					var trace = {x: x_array, y: y_array, type: 'scatter'}
-					data_traces.push(trace)
-				}
-			});
-			data_revision++;
-			
-			console.log(data_traces);
-
-
-			return (
-
-				<div
-				ref={drop}
-				style={{
-					backgroundColor: isOver ? "green" : "cyan",
-				}}
-				className={props.cls}
-				>
-					<Plot
-						data={data_traces}
-						layout={ {title: 'Lattice vs. Time plot',
-								autosize: true,
-								datarevision: data_revision,
-								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4}		
-						} }
-						useResizeHandler={true}
-						style={ {height:"100%",width:"100%"} }
-					/>
-				</div>
-			);
-		default:
-			return (
-				<div
-				ref={drop}
-				style={{
-					backgroundColor: isOver ? "green" : "cyan",
-				}}
-				className={props.cls}
-				>	
-					{props.selectedViews[props.cls]}
-				</div>
-			);
-	}
-	
-}
-
 function GridOneAndTwo(props) {
 	return (
 		<div className="OneAndTwo">
@@ -428,18 +252,21 @@ function GridOneAndTwo(props) {
 				csvData={props.csvData}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
+		    		dataRevision={props.dataRevision}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="two" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
+		    		dataRevision={props.dataRevision}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="three" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
+		    		dataRevision={props.dataRevision}
 				viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
@@ -452,12 +279,14 @@ function GridOneAndOneHorizontal(props) {
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
 				selectedData={props.selectedData}
+		    		dataRevision={props.dataRevision}
 				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="two" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
 				selectedData={props.selectedData}
+		    		dataRevision={props.dataRevision}
 				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 		</div>
@@ -471,6 +300,7 @@ function GridOneAndOneVertical(props) {
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
 				selectedData={props.selectedData}
+		    		dataRevision={props.dataRevision}
 				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="two" 
@@ -478,6 +308,7 @@ function GridOneAndOneVertical(props) {
 				csvData={props.csvData}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
+		    		dataRevision={props.dataRevision}
 				viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
@@ -491,24 +322,28 @@ function GridQuads(props) {
 				csvData={props.csvData}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
+		    		dataRevision={props.dataRevision}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="two" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
+		    		dataRevision={props.dataRevision}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="three" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
+		    		dataRevision={props.dataRevision}
 				viewUpdater={props.viewUpdater}></DropView>
 			<DropView cls="four" 
 				selectedViews={props.selectedViews} 
 				csvData={props.csvData}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
+		    		dataRevision={props.dataRevision}
 				viewUpdater={props.viewUpdater}></DropView>
 		</div>
 	);
