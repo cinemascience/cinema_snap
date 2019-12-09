@@ -8,7 +8,7 @@ import './App.css';
 
 function DropView(props){
 
-	const [dataTraces, updateDataTraces] = useState([]);
+	const [dataRevision, updateDataRevision] = useState(0);
 	const data_revision = 0;
 
 	const [{ isOver }, drop] = useDrop({
@@ -65,7 +65,6 @@ function DropView(props){
 						}
 						var trace = {x: x_array, y: y_array, type: 'scatter'}
 						data_traces.push(trace);
-						updateDataTraces([...dataTraces, trace]);
 					}
 				});
 			}
@@ -81,7 +80,7 @@ function DropView(props){
 				className={props.cls}
 				>
 					<Plot
-						data={dataTraces}
+						data={data_traces}
 						layout={ {title: 'Intensity vs. Angle plot',
 								autosize: true,
 								datarevision: data_revision,
@@ -109,7 +108,6 @@ function DropView(props){
 					data_traces.push(trace)
 				}
 			});
-			data_revision++;
 			
 			console.log(data_traces);
 
@@ -150,7 +148,6 @@ function DropView(props){
 					data_traces.push(trace)
 				}
 			});
-			data_revision++;
 			
 			console.log(data_traces);
 
@@ -170,6 +167,78 @@ function DropView(props){
 								autosize: true,
 								datarevision: data_revision,
 								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4}		
+						} }
+						useResizeHandler={true}
+						style={ {height:"100%",width:"100%"} }
+					/>
+				</div>
+			);
+		case "contourDiagram":
+			var data_traces = []
+			Papa.parse("http://" + props.connectAddress + "/" + props.csvData[0]["FILE_heatmap_path"], {
+				download: true,
+				complete: function(results) {
+					var x_array = []
+					var y_array = []
+					var z_array = []
+					var current_y = 1;
+					for (const line in results["data"]) {
+						if(line == 0){
+							continue;
+						}
+						if(Number(results["data"][line][1]) == 1){
+						x_array.push(Number(results["data"][line][5]));
+						}
+						y_array.push(Number(results["data"][line][4]));
+						if(current_y != Number(results["data"][line][1])){
+							current_y = Number(results["data"][line][1])
+							z_array.push(y_array);
+							y_array = [];
+						}
+					}
+					var trace = {x: x_array, z: z_array, type: 'heatmap', colorscale: "Picnic"}
+					data_traces.push(trace)
+				}
+			});
+			
+			console.log(data_traces);
+
+
+			return (
+
+				<div
+				ref={drop}
+				style={{
+					backgroundColor: isOver ? "green" : "cyan",
+				}}
+				className={props.cls}
+				>
+					<Plot
+						data={data_traces}
+						layout={ {title: 'Contour Diagram',
+								autosize: true,
+								datarevision: data_revision,
+								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},
+								  xaxis: {
+								    title: {
+								      text: 'X-ray Diffraction Angle',
+								      font: {
+									family: 'Courier New, monospace',
+									size: 18,
+									color: '#7f7f7f'
+								      }
+								    },
+								  },
+								  yaxis: {
+								    title: {
+								      text: 'Shot number',
+								      font: {
+									family: 'Courier New, monospace',
+									size: 18,
+									color: '#7f7f7f'
+								      }
+								    }
+								  }
 						} }
 						useResizeHandler={true}
 						style={ {height:"100%",width:"100%"} }
