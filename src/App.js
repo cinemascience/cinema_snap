@@ -320,6 +320,90 @@ function DropView(props) {
 					/>
 				</div>
 			);
+		case "pvChart":
+			var data_traces = []
+			var data_revision = 0
+			Papa.parse("http://" + props.connectAddress + "/" + props.csvData[0]["FILE_pressure_path"], {
+				download: true,
+				complete: function(results) {
+					var x_array = []
+					var y_array = []
+					for (const line in results["data"]) {
+						x_array.push(Number(results["data"][line][1]));
+						y_array.push(Number(results["data"][line][2]));
+					}
+					var trace = {x: x_array, y: y_array, type: 'scatter'}
+					data_traces.push(trace)
+				}
+			});
+			data_revision++;
+			
+			console.log(data_traces);
+
+
+			return (
+
+				<div
+				ref={drop}
+				style={{
+					backgroundColor: isOver ? "green" : "cyan",
+				}}
+				className={props.cls}
+				>
+					<Plot
+						data={data_traces}
+						layout={ {title: 'Pressure vs. Volume plot',
+								autosize: true,
+								datarevision: data_revision,
+								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4}		
+						} }
+						useResizeHandler={true}
+						style={ {height:"100%",width:"100%"} }
+					/>
+				</div>
+			);
+		case "latticeVSTime":
+			var data_traces = []
+			var data_revision = 0
+			Papa.parse("http://" + props.connectAddress + "/" + props.csvData[0]["FILE_lattice_path"], {
+				download: true,
+				complete: function(results) {
+					var x_array = []
+					var y_array = []
+					for (const line in results["data"]) {
+						x_array.push(Number(results["data"][line][1]));
+						y_array.push(Number(results["data"][line][2]));
+					}
+					var trace = {x: x_array, y: y_array, type: 'scatter'}
+					data_traces.push(trace)
+				}
+			});
+			data_revision++;
+			
+			console.log(data_traces);
+
+
+			return (
+
+				<div
+				ref={drop}
+				style={{
+					backgroundColor: isOver ? "green" : "cyan",
+				}}
+				className={props.cls}
+				>
+					<Plot
+						data={data_traces}
+						layout={ {title: 'Lattice vs. Time plot',
+								autosize: true,
+								datarevision: data_revision,
+								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4}		
+						} }
+						useResizeHandler={true}
+						style={ {height:"100%",width:"100%"} }
+					/>
+				</div>
+			);
 		default:
 			return (
 				<div
