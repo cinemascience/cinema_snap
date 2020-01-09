@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: 80% 20%;
   grid-template-rows: 17% 3% 80%;
-  background-color: black;
+  background-color: #29335C;
   height: 100vh;
 }
 
@@ -72,7 +72,7 @@ img {
 
 
 .OneAndTwo { 
-  background-color: #000000;
+  background-color: #29335C;
   display: grid;
   width: auto;
   height: 100%;
@@ -108,7 +108,7 @@ img {
 }
 
 .OneAndOneHorizontal {
-  background-color: #000000;
+  background-color: #29335C;
   display: grid;
   width: auto;
   height: 100%;
@@ -135,7 +135,7 @@ img {
 }
 
 .OneAndOneVertical {
-  background-color: #000000;
+  background-color: #29335C;
   display: grid;
   width: auto;
   height: 100%;
@@ -162,7 +162,7 @@ img {
 }
 
 .Quads {
-  background-color: #000000;
+  background-color: #29335C;
   display: grid;
   width: auto;
   height: 100%;
