@@ -84,7 +84,27 @@ function DropView(props){
 						layout={ {title: 'Intensity vs. Angle plot',
 								autosize: true,
 								datarevision: data_revision,
-								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4}		
+								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
+								  xaxis: {
+								    title: {
+								      text: 'X-ray Diffraction Angle',
+								      font: {
+									family: 'Courier New, monospace',
+									size: 18,
+									color: '#7f7f7f'
+								      }
+								    },
+								  },
+								  yaxis: {
+								    title: {
+								      text: 'Intensity',
+								      font: {
+									family: 'Courier New, monospace',
+									size: 18,
+									color: '#7f7f7f'
+								      }
+								    }
+								  }
 						} }
 						useResizeHandler={true}
 						revision={data_revision}
@@ -94,7 +114,8 @@ function DropView(props){
 			);
 			
 		case "pvChart":
-			var data_traces = []
+			var data_traces = [];
+			if(typeof props.csvData != "undefined"){
 			Papa.parse("http://" + props.connectAddress + "/" + props.csvData[0]["FILE_pressure_path"], {
 				download: true,
 				complete: function(results) {
@@ -108,6 +129,7 @@ function DropView(props){
 					data_traces.push(trace)
 				}
 			});
+			}
 			
 			console.log(data_traces);
 
@@ -126,7 +148,27 @@ function DropView(props){
 						layout={ {title: 'Pressure vs. Volume plot',
 								autosize: true,
 								datarevision: data_revision,
-								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4}		
+								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
+								  xaxis: {
+								    title: {
+								      text: 'Pressure',
+								      font: {
+									family: 'Courier New, monospace',
+									size: 18,
+									color: '#7f7f7f'
+								      }
+								    },
+								  },
+								  yaxis: {
+								    title: {
+								      text: 'Volume',
+								      font: {
+									family: 'Courier New, monospace',
+									size: 18,
+									color: '#7f7f7f'
+								      }
+								    }
+								  }
 						} }
 						useResizeHandler={true}
 						style={ {height:"100%",width:"100%"} }
@@ -135,6 +177,7 @@ function DropView(props){
 			);
 		case "latticeVSTime":
 			var data_traces = []
+			if(typeof props.csvData != "undefined"){
 			Papa.parse("http://" + props.connectAddress + "/" + props.csvData[0]["FILE_lattice_path"], {
 				download: true,
 				complete: function(results) {
@@ -148,6 +191,7 @@ function DropView(props){
 					data_traces.push(trace)
 				}
 			});
+			}
 			
 			console.log(data_traces);
 
@@ -166,7 +210,27 @@ function DropView(props){
 						layout={ {title: 'Lattice vs. Time plot',
 								autosize: true,
 								datarevision: data_revision,
-								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4}		
+								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
+								  xaxis: {
+								    title: {
+								      text: 'Time',
+								      font: {
+									family: 'Courier New, monospace',
+									size: 18,
+									color: '#7f7f7f'
+								      }
+								    },
+								  },
+								  yaxis: {
+								    title: {
+								      text: 'Lattice Constant',
+								      font: {
+									family: 'Courier New, monospace',
+									size: 18,
+									color: '#7f7f7f'
+								      }
+								    }
+								  }
 						} }
 						useResizeHandler={true}
 						style={ {height:"100%",width:"100%"} }
@@ -175,6 +239,7 @@ function DropView(props){
 			);
 		case "contourDiagram":
 			var data_traces = []
+			if(typeof props.csvData != "undefined"){
 			Papa.parse("http://" + props.connectAddress + "/" + props.csvData[0]["FILE_heatmap_path"], {
 				download: true,
 				complete: function(results) {
@@ -200,6 +265,7 @@ function DropView(props){
 					data_traces.push(trace)
 				}
 			});
+			}
 			
 			console.log(data_traces);
 
