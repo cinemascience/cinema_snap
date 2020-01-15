@@ -28,6 +28,10 @@ class App extends React.Component {
 		csvData: undefined,
 		connectAddress: undefined,
 		dataRevision: 0,
+		xyTraces: [],
+		pv_traces: [],
+		lt_traces: [],
+		con_traces: [],
 	};
 
 	//Bind the "this" context to the handler functions
@@ -83,6 +87,44 @@ class App extends React.Component {
 		header: true,
 		complete: this.updateSelectedCSV
 	});
+
+	// new stuff as a test to see if pre-loading will fix data display issue
+	const xy_promise = new Promise((resolve, reject) => {
+		var xy_files = [];
+		var xy_traces = [];
+		for (const line in this.state.csvData) {
+			xy_files.push(this.state.csvData[line]["FILE_spectra_path"])
+		}
+		for (const file in xy_files){
+			var path = xy_files[file]
+			Papa.parse("http://" + this.state.connectAddress + "/" + path, {
+				download: true,
+				complete: function(results) {
+					var x_array = []
+					var y_array = []
+					for (const line in results["data"]) {
+						var point = results["data"][line][0]
+						var components = point.split("  ");
+						x_array.push(Number(components[0]));
+						y_array.push(Number(components[1]));
+					}
+					var trace = {x: x_array, y: y_array, type: 'scatter'}
+					xy_traces.push(trace);
+				}
+			});
+		}
+		if(Array.isArray(xy_traces) && xy_traces.length){
+			resolve(xy_traces);
+		}
+	});
+
+	let currentComponent = this;
+	
+	xy_promise.then(function(value) {
+		currentComponent.setState({
+			xyTraces : value
+		});
+	});
 	
   }
 
@@ -109,6 +151,7 @@ class App extends React.Component {
 		  <DataViewGrid viewUpdater={this.updateSelectedViews}
 		    		selectedViews={this.state.selectedViews}
 		    		csvData={this.state.csvData}
+		    		xyTraces={this.state.xyTraces}
 		    		selectedLayout={this.state.selectedLayout}
 		    		connectAddress={this.state.connectAddress}
 		    		dataRevision={this.state.dataRevision}
@@ -293,6 +336,7 @@ function DataViewGrid(props) {
 				<div className="DataViewGrid">
 				<GridQuads 
 					selectedViews={props.selectedViews} 
+		    			xyTraces={props.xyTraces}
 					viewUpdater={props.viewUpdater} 
 					selectedData={props.selectedData}
 					connectAddress={props.connectAddress}
@@ -397,6 +441,7 @@ function GridQuads(props) {
 		<div className="Quads">
 			<DropView cls="one" 
 				selectedViews={props.selectedViews} 
+		    		xyTraces={props.xyTraces}
 				csvData={props.csvData}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}

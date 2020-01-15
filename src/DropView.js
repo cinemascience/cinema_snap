@@ -45,31 +45,6 @@ function DropView(props){
 				</div>
 			);
 		case "xyGraph":
-			var xy_files = []
-			var data_traces = []
-			for (const line in props.csvData) {
-				xy_files.push(props.csvData[line]["FILE_spectra_path"])
-			}
-			for (const file in xy_files){
-				var path = xy_files[file]
-				Papa.parse("http://" + props.connectAddress + "/" + path, {
-					download: true,
-					complete: function(results) {
-						var x_array = []
-						var y_array = []
-						for (const line in results["data"]) {
-							var point = results["data"][line][0]
-							var components = point.split("  ");
-							x_array.push(Number(components[0]));
-							y_array.push(Number(components[1]));
-						}
-						var trace = {x: x_array, y: y_array, type: 'scatter'}
-						data_traces.push(trace);
-					}
-				});
-			}
-
-			
 			return (
 
 				<div
@@ -80,10 +55,10 @@ function DropView(props){
 				className={props.cls}
 				>
 					<Plot
-						data={data_traces}
+						data={props.xyTraces}
 						layout={ {title: 'Intensity vs. Angle plot',
 								autosize: true,
-								datarevision: data_revision,
+								datarevision: dataRevision,
 								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
 								  xaxis: {
 								    title: {
