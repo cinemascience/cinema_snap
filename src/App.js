@@ -51,6 +51,12 @@ class App extends React.Component {
 	});
   }
 
+  increaseDataRevision() {
+	this.setState({
+		dataRevision : this.state.dataRevision + 1
+	});
+  }
+
   //Handler function for the currently selected data point
   updateSelectedData(data) {
   	this.setState({
@@ -85,46 +91,47 @@ class App extends React.Component {
 	Papa.parse("http://" + this.state.connectAddress + "/data.csv", {
 		download: true,
 		header: true,
-		complete: this.updateSelectedCSV
-	});
+		complete: (results) => {
+			this.updateSelectedCSV(results)
 
-	// new stuff as a test to see if pre-loading will fix data display issue
-	const xy_promise = new Promise((resolve, reject) => {
-		var xy_files = [];
-		var xy_traces = [];
-		for (const line in this.state.csvData) {
-			xy_files.push(this.state.csvData[line]["FILE_spectra_path"])
-		}
-		for (const file in xy_files){
-			var path = xy_files[file]
-			Papa.parse("http://" + this.state.connectAddress + "/" + path, {
-				download: true,
-				complete: function(results) {
-					var x_array = []
-					var y_array = []
-					for (const line in results["data"]) {
-						var point = results["data"][line][0]
-						var components = point.split("  ");
-						x_array.push(Number(components[0]));
-						y_array.push(Number(components[1]));
+			var xy_files = [];
+			var xy_traces = [];
+			for (const line in this.state.csvData) {
+				xy_files.push(this.state.csvData[line]["FILE_spectra_path"])
+			}
+			for (const file in xy_files){
+				var path = xy_files[file]
+				Papa.parse("http://" + this.state.connectAddress + "/" + path, {
+					download: true,
+					complete: function(results) {
+						var x_array = []
+						var y_array = []
+						for (const line in results["data"]) {
+							var point = results["data"][line][0]
+							var components = point.split("  ");
+							x_array.push(Number(components[0]));
+							y_array.push(Number(components[1]));
+						}
+						var trace = {x: x_array, y: y_array, type: 'scatter'}
+						xy_traces.push(trace);
 					}
-					var trace = {x: x_array, y: y_array, type: 'scatter'}
-					xy_traces.push(trace);
-				}
+				});
+			}
+
+			this.setState({
+				xyTraces : xy_traces,
 			});
-		}
-		if(Array.isArray(xy_traces) && xy_traces.length){
-			resolve(xy_traces);
+
+			this.intervalID = setInterval(
+				() => this.increaseDataRevision(),
+				1000
+			);
+
 		}
 	});
 
-	let currentComponent = this;
-	
-	xy_promise.then(function(value) {
-		currentComponent.setState({
-			xyTraces : value
-		});
-	});
+
+
 	
   }
 
