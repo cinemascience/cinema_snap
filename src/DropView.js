@@ -4,6 +4,7 @@ import { dropped } from './DropLogic'
 import ItemTypes from './ItemTypes'
 import Papa from 'papaparse';
 import Plot from 'react-plotly.js';
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import './App.css';
 
 function DropView(props){
@@ -28,6 +29,19 @@ function DropView(props){
 			
 	switch(props.selectedViews[props.cls]){
 		case "image":
+			if(typeof props.csvData === "undefined"){
+				return (
+					<div
+					ref={drop}
+					style={{
+						backgroundColor: isOver ? "green" : "cyan",
+					}}
+					className={props.cls}
+					>	
+						No database has been connected
+					</div>
+				);
+			}
 			return (
 				<div
 				ref={drop}
@@ -36,11 +50,15 @@ function DropView(props){
 				}}
 				className={props.cls}
 				>
-					<img src={"http://" + 
-						props.connectAddress + 
-						"/" + 
-						props.csvData[props.selectedData]["FILE_image_path"]} 
-					alt=""/>
+					<TransformWrapper>
+						<TransformComponent>
+							<img className="xrdImage" src={"http://" + 
+								props.connectAddress + 
+								"/" + 
+								props.csvData[props.selectedData]["FILE_image_path"]} 
+							alt=""/>
+						</TransformComponent>
+					</TransformWrapper>
 					
 				</div>
 			);
