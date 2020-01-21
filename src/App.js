@@ -29,9 +29,9 @@ class App extends React.Component {
 		connectAddress: undefined,
 		dataRevision: 0,
 		xyTraces: [],
-		pv_traces: [],
-		lt_traces: [],
-		con_traces: [],
+		pvTraces: [],
+		ltTraces: [],
+		conTraces: [],
 	};
 
 	//Bind the "this" context to the handler functions
@@ -93,7 +93,8 @@ class App extends React.Component {
 		header: true,
 		complete: (results) => {
 			this.updateSelectedCSV(results)
-
+			
+			//process azmuthally integrated data
 			var xy_files = [];
 			var xy_traces = [];
 			for (const line in this.state.csvData) {
@@ -118,8 +119,27 @@ class App extends React.Component {
 				});
 			}
 
+			//process pressure vs volume data
+			var pv_traces = [];
+			if(typeof this.state.csvData != "undefined"){
+			Papa.parse("http://" + this.state.connectAddress + "/" + this.state.csvData[0]["FILE_pressure_path"], {
+				download: true,
+				complete: function(results) {
+					var x_array = []
+					var y_array = []
+					for (const line in results["data"]) {
+						x_array.push(Number(results["data"][line][1]));
+						y_array.push(Number(results["data"][line][2]));
+					}
+					var trace = {x: x_array, y: y_array, type: 'scatter'}
+					pv_traces.push(trace)
+				}
+			});
+			}
+
 			this.setState({
 				xyTraces : xy_traces,
+				pvTraces: pv_traces,
 			});
 
 			this.intervalID = setTimeout(
