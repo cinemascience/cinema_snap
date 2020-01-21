@@ -137,9 +137,28 @@ class App extends React.Component {
 			});
 			}
 
+			//process lattice vs time data
+			var lt_traces = []
+			if(typeof this.state.csvData != "undefined"){
+			Papa.parse("http://" + this.state.connectAddress + "/" + this.state.csvData[0]["FILE_lattice_path"], {
+				download: true,
+				complete: function(results) {
+					var x_array = []
+					var y_array = []
+					for (const line in results["data"]) {
+						x_array.push(Number(results["data"][line][1]));
+						y_array.push(Number(results["data"][line][2]));
+					}
+					var trace = {x: x_array, y: y_array, type: 'scatter'}
+					lt_traces.push(trace)
+				}
+			});
+			}
+
 			this.setState({
 				xyTraces : xy_traces,
 				pvTraces: pv_traces,
+				ltTraces: lt_traces,
 			});
 
 			this.intervalID = setTimeout(

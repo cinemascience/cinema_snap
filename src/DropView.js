@@ -136,22 +136,6 @@ function DropView(props){
 				</div>
 			);
 		case "latticeVSTime":
-			var data_traces = []
-			if(typeof props.csvData != "undefined"){
-			Papa.parse("http://" + props.connectAddress + "/" + props.csvData[0]["FILE_lattice_path"], {
-				download: true,
-				complete: function(results) {
-					var x_array = []
-					var y_array = []
-					for (const line in results["data"]) {
-						x_array.push(Number(results["data"][line][1]));
-						y_array.push(Number(results["data"][line][2]));
-					}
-					var trace = {x: x_array, y: y_array, type: 'scatter'}
-					data_traces.push(trace)
-				}
-			});
-			}
 			
 			console.log(data_traces);
 
