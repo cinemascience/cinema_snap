@@ -58,7 +58,8 @@ function DropView(props){
 						data={props.xyTraces}
 						layout={ {title: 'Intensity vs. Angle plot',
 								autosize: true,
-								datarevision: dataRevision,
+								datarevision: props.dataRevision,
+								uirevision: 1,
 								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
 								  xaxis: {
 								    title: {
@@ -82,7 +83,7 @@ function DropView(props){
 								  }
 						} }
 						useResizeHandler={true}
-						revision={data_revision}
+						revision="0"
 						style={ {height:"100%",width:"100%"} }
 					/>
 				</div>

@@ -122,7 +122,7 @@ class App extends React.Component {
 				xyTraces : xy_traces,
 			});
 
-			this.intervalID = setInterval(
+			this.intervalID = setTimeout(
 				() => this.increaseDataRevision(),
 				1000
 			);
