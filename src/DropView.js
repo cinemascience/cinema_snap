@@ -55,7 +55,7 @@ function DropView(props){
 				className={props.cls}
 				>
 					<Plot
-						data={props.xyTraces}
+						data={props.finalDataset.xyTraces}
 						layout={ {title: 'Intensity vs. Angle plot',
 								autosize: true,
 								datarevision: props.dataRevision,
@@ -91,9 +91,6 @@ function DropView(props){
 			
 		case "pvChart":
 			
-			console.log(data_traces);
-
-
 			return (
 
 				<div
@@ -104,7 +101,7 @@ function DropView(props){
 				className={props.cls}
 				>
 					<Plot
-						data={data_traces}
+						data={props.finalDataset.pvTraces}
 						layout={ {title: 'Pressure vs. Volume plot',
 								autosize: true,
 								datarevision: data_revision,
@@ -137,9 +134,6 @@ function DropView(props){
 			);
 		case "latticeVSTime":
 			
-			console.log(data_traces);
-
-
 			return (
 
 				<div
@@ -150,7 +144,7 @@ function DropView(props){
 				className={props.cls}
 				>
 					<Plot
-						data={data_traces}
+						data={props.finalDataset.ltTraces}
 						layout={ {title: 'Lattice vs. Time plot',
 								autosize: true,
 								datarevision: data_revision,
@@ -182,37 +176,6 @@ function DropView(props){
 				</div>
 			);
 		case "contourDiagram":
-			var data_traces = []
-			if(typeof props.csvData != "undefined"){
-			Papa.parse("http://" + props.connectAddress + "/" + props.csvData[0]["FILE_heatmap_path"], {
-				download: true,
-				complete: function(results) {
-					var x_array = []
-					var y_array = []
-					var z_array = []
-					var current_y = 1;
-					for (const line in results["data"]) {
-						if(line == 0){
-							continue;
-						}
-						if(Number(results["data"][line][1]) == 1){
-						x_array.push(Number(results["data"][line][5]));
-						}
-						y_array.push(Number(results["data"][line][4]));
-						if(current_y != Number(results["data"][line][1])){
-							current_y = Number(results["data"][line][1])
-							z_array.push(y_array);
-							y_array = [];
-						}
-					}
-					var trace = {x: x_array, z: z_array, type: 'heatmap', colorscale: "Picnic"}
-					data_traces.push(trace)
-				}
-			});
-			}
-			
-			console.log(data_traces);
-
 
 			return (
 
@@ -224,7 +187,7 @@ function DropView(props){
 				className={props.cls}
 				>
 					<Plot
-						data={data_traces}
+						data={props.finalDataset.conTraces}
 						layout={ {title: 'Contour Diagram',
 								autosize: true,
 								datarevision: data_revision,
