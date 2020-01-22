@@ -103,6 +103,7 @@ function DropView(props){
 						useResizeHandler={true}
 						revision="0"
 						style={ {height:"100%",width:"100%"} }
+						onClick={(e) => props.selectedDataUpdater(e.points[0].curveNumber)}
 					/>
 				</div>
 			);

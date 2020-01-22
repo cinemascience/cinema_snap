@@ -235,6 +235,7 @@ class App extends React.Component {
 		    		selectedLayout={this.state.selectedLayout}
 		    		connectAddress={this.state.connectAddress}
 		    		dataRevision={this.state.dataRevision}
+		    		selectedDataUpdater={this.updateSelectedData}
 		    		selectedData={this.state.selectedData}/>
 		  <GridTemplateButton layoutUpdater={this.updateSelectedLayout}/>
 		</DndProvider>
@@ -381,6 +382,7 @@ function DataViewGrid(props) {
 					selectedViews={props.selectedViews} 
 		    			finalDataset={props.finalDataset}
 					viewUpdater={props.viewUpdater} 
+		    			selectedDataUpdater={props.selectedDataUpdater}
 					selectedData={props.selectedData}
 					connectAddress={props.connectAddress}
 		    			dataRevision={props.dataRevision}
@@ -394,6 +396,7 @@ function DataViewGrid(props) {
 					selectedViews={props.selectedViews} 
 		    			finalDataset={props.finalDataset}
 					viewUpdater={props.viewUpdater} 
+		    			selectedDataUpdater={props.selectedDataUpdater}
 					selectedData={props.selectedData}
 					connectAddress={props.connectAddress}
 		    			dataRevision={props.dataRevision}
@@ -407,6 +410,7 @@ function DataViewGrid(props) {
 					selectedViews={props.selectedViews} 
 		    			finalDataset={props.finalDataset}
 					viewUpdater={props.viewUpdater} 
+		    			selectedDataUpdater={props.selectedDataUpdater}
 					selectedData={props.selectedData}
 					connectAddress={props.connectAddress}
 		    			dataRevision={props.dataRevision}
@@ -421,6 +425,7 @@ function DataViewGrid(props) {
 					selectedViews={props.selectedViews} 
 		    			finalDataset={props.finalDataset}
 					viewUpdater={props.viewUpdater} 
+		    			selectedDataUpdater={props.selectedDataUpdater}
 					selectedData={props.selectedData}
 					connectAddress={props.connectAddress}
 		    			dataRevision={props.dataRevision}
@@ -456,6 +461,7 @@ function GridOneAndTwo(props) {
 				selectedViews={props.selectedViews}
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
+		    		selectedDataUpdater={props.selectedDataUpdater}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
 		    		dataRevision={props.dataRevision}
@@ -464,6 +470,7 @@ function GridOneAndTwo(props) {
 				selectedViews={props.selectedViews} 
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
+		    		selectedDataUpdater={props.selectedDataUpdater}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
 		    		dataRevision={props.dataRevision}
@@ -472,6 +479,7 @@ function GridOneAndTwo(props) {
 				selectedViews={props.selectedViews} 
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
+		    		selectedDataUpdater={props.selectedDataUpdater}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
 		    		dataRevision={props.dataRevision}
@@ -487,6 +495,7 @@ function GridOneAndOneHorizontal(props) {
 				selectedViews={props.selectedViews} 
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
+		    		selectedDataUpdater={props.selectedDataUpdater}
 				selectedData={props.selectedData}
 		    		dataRevision={props.dataRevision}
 				connectAddress={props.connectAddress}
@@ -495,6 +504,7 @@ function GridOneAndOneHorizontal(props) {
 				selectedViews={props.selectedViews} 
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
+		    		selectedDataUpdater={props.selectedDataUpdater}
 				selectedData={props.selectedData}
 		    		dataRevision={props.dataRevision}
 				connectAddress={props.connectAddress}
@@ -510,6 +520,7 @@ function GridOneAndOneVertical(props) {
 				selectedViews={props.selectedViews} 
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
+		    		selectedDataUpdater={props.selectedDataUpdater}
 				selectedData={props.selectedData}
 		    		dataRevision={props.dataRevision}
 				connectAddress={props.connectAddress}
@@ -518,6 +529,7 @@ function GridOneAndOneVertical(props) {
 				selectedViews={props.selectedViews} 
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
+		    		selectedDataUpdater={props.selectedDataUpdater}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
 		    		dataRevision={props.dataRevision}
@@ -533,6 +545,7 @@ function GridQuads(props) {
 				selectedViews={props.selectedViews} 
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
+		    		selectedDataUpdater={props.selectedDataUpdater}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
 		    		dataRevision={props.dataRevision}
@@ -541,6 +554,7 @@ function GridQuads(props) {
 				selectedViews={props.selectedViews} 
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
+		    		selectedDataUpdater={props.selectedDataUpdater}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
 		    		dataRevision={props.dataRevision}
@@ -549,6 +563,7 @@ function GridQuads(props) {
 				selectedViews={props.selectedViews} 
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
+		    		selectedDataUpdater={props.selectedDataUpdater}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
 		    		dataRevision={props.dataRevision}
@@ -557,6 +572,7 @@ function GridQuads(props) {
 				selectedViews={props.selectedViews} 
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
+		    		selectedDataUpdater={props.selectedDataUpdater}
 				selectedData={props.selectedData}
 				connectAddress={props.connectAddress}
 		    		dataRevision={props.dataRevision}
