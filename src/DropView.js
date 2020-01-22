@@ -78,6 +78,7 @@ function DropView(props){
 								autosize: true,
 								datarevision: props.dataRevision,
 								uirevision: 1,
+								hovermode: 'closest',
 								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
 								  xaxis: {
 								    title: {
