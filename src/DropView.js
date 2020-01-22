@@ -235,6 +235,7 @@ function DropView(props){
 						} }
 						useResizeHandler={true}
 						style={ {height:"100%",width:"100%"} }
+						onClick={(e) => props.selectedDataUpdater(e.points[0].y)}
 					/>
 				</div>
 			);
