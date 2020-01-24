@@ -29,7 +29,7 @@ function DropView(props){
 			
 	switch(props.selectedViews[props.cls]){
 		case "image":
-			if(typeof props.csvData === "undefined"){
+			if(typeof props.csvData === "undefined" || props.finalDataset === "undefined"){
 				return (
 					<div
 					ref={drop}
@@ -63,6 +63,19 @@ function DropView(props){
 				</div>
 			);
 		case "xyGraph":
+			if(typeof props.csvData === "undefined" || props.finalDataset === "undefined"){
+				return (
+					<div
+					ref={drop}
+					style={{
+						backgroundColor: isOver ? "green" : "cyan",
+					}}
+					className={props.cls}
+					>	
+						No database has been connected
+					</div>
+				);
+			}
 			return (
 
 				<div
@@ -110,6 +123,19 @@ function DropView(props){
 			);
 			
 		case "pvChart":
+			if(typeof props.csvData === "undefined" || props.finalDataset.pvTraces.length === 0){
+				return (
+					<div
+					ref={drop}
+					style={{
+						backgroundColor: isOver ? "green" : "cyan",
+					}}
+					className={props.cls}
+					>	
+						No database has been connected
+					</div>
+				);
+			}
 			
 			return (
 
@@ -125,6 +151,7 @@ function DropView(props){
 						layout={ {title: 'Pressure vs. Volume plot',
 								autosize: true,
 								datarevision: data_revision,
+								uirevision: 1, 
 								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
 								  xaxis: {
 								    title: {
@@ -145,14 +172,42 @@ function DropView(props){
 									color: '#7f7f7f'
 								      }
 								    }
-								  }
+								  },
+								shapes: [
+									{
+										type: 'line',
+										x0: props.finalDataset.pvTraces[0].x[props.selectedData],
+										x1: props.finalDataset.pvTraces[0].x[props.selectedData],
+										y0: Math.min(...props.finalDataset.pvTraces[0].y),
+										y1: Math.max(...props.finalDataset.pvTraces[0].y),
+										line: {
+											color: 'rgb(0, 255, 0)',
+											width: 4,
+											dash: 'dot'
+										}
+									}
+								]
 						} }
 						useResizeHandler={true}
 						style={ {height:"100%",width:"100%"} }
+						onClick={(e) => props.selectedDataUpdater(e.points[0].pointNumber)}
 					/>
 				</div>
 			);
 		case "latticeVSTime":
+			if(typeof props.csvData === "undefined" || props.finalDataset === "undefined"){
+				return (
+					<div
+					ref={drop}
+					style={{
+						backgroundColor: isOver ? "green" : "cyan",
+					}}
+					className={props.cls}
+					>	
+						No database has been connected
+					</div>
+				);
+			}
 			
 			return (
 
@@ -168,6 +223,7 @@ function DropView(props){
 						layout={ {title: 'Lattice vs. Time plot',
 								autosize: true,
 								datarevision: data_revision,
+								uirevision: 1,
 								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
 								  xaxis: {
 								    title: {
@@ -196,7 +252,19 @@ function DropView(props){
 				</div>
 			);
 		case "contourDiagram":
-
+			if(typeof props.csvData === "undefined" || props.finalDataset.conTraces.length === 0){
+				return (
+					<div
+					ref={drop}
+					style={{
+						backgroundColor: isOver ? "green" : "cyan",
+					}}
+					className={props.cls}
+					>	
+						No database has been connected
+					</div>
+				);
+			}
 			return (
 
 				<div
@@ -208,9 +276,11 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.conTraces}
-						layout={ {title: 'Contour Diagram',
+						layout={ 
+							{title: 'Contour Diagram',
 								autosize: true,
 								datarevision: data_revision,
+								uirevision: 1,
 								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},
 								  xaxis: {
 								    title: {
@@ -231,7 +301,21 @@ function DropView(props){
 									color: '#7f7f7f'
 								      }
 								    }
-								  }
+								  },
+								shapes: [
+									{
+										type: 'line',
+										x0: props.finalDataset.conTraces[0].x[0],
+										x1: props.finalDataset.conTraces[0].x.slice(-1)[0],
+										y0: props.selectedData,
+										y1: props.selectedData,
+										line: {
+											color: 'rgb(0, 255, 0)',
+											width: 4,
+											dash: 'dot'
+										}
+									}
+								]
 						} }
 						useResizeHandler={true}
 						style={ {height:"100%",width:"100%"} }
