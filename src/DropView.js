@@ -228,7 +228,7 @@ function DropView(props){
 				</div>
 			);
 		case "latticeVSTime":
-			if(typeof props.csvData === "undefined" || props.finalDataset === "undefined"){
+			if(typeof props.csvData === "undefined" || props.finalDataset.ltTraces.length === 0){
 				return (
 					<div
 					ref={drop}
