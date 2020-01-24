@@ -342,6 +342,7 @@ function ParallelCoordinateView(props) {
 				} }
 				useResizeHandler={true}
 				style={ {height:"100%",width:"100%"} }
+				onRestyle={(e) => {console.log(e)}}
 			/>
 		</div> 
 	);

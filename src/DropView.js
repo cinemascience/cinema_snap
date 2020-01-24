@@ -52,15 +52,6 @@ function DropView(props){
 				}}
 				className={props.cls}
 				>
-				{	/*<TransformWrapper>
-						<TransformComponent>
-							<img className="xrdImage" src={"http://" + 
-								props.connectAddress + 
-								"/" + 
-								props.csvData[props.selectedData]["FILE_image_path"]} 
-							alt=""/>
-						</TransformComponent>
-					</TransformWrapper>*/}
 					<Plot
 						data={[
 							{
@@ -286,10 +277,25 @@ function DropView(props){
 									color: '#7f7f7f'
 								      }
 								    }
-								  }
+								  },
+								shapes: [
+									{
+										type: 'line',
+										x0: props.finalDataset.ltTraces[0].x[props.selectedData],
+										x1: props.finalDataset.ltTraces[0].x[props.selectedData],
+										y0: Math.min(...props.finalDataset.ltTraces[0].y),
+										y1: Math.max(...props.finalDataset.ltTraces[0].y),
+										line: {
+											color: 'rgb(0, 255, 0)',
+											width: 4,
+											dash: 'dot'
+										}
+									}
+								]
 						} }
 						useResizeHandler={true}
 						style={ {height:"100%",width:"100%"} }
+						onClick={(e) => props.selectedDataUpdater(e.points[0].pointNumber)}
 					/>
 				</div>
 			);
