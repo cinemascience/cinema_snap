@@ -29,6 +29,8 @@ function DropView(props){
 			
 	switch(props.selectedViews[props.cls]){
 		case "image":
+			let img_width = 1600;
+			let img_height = 1600;
 			if(typeof props.csvData === "undefined" || props.finalDataset === "undefined"){
 				return (
 					<div
@@ -50,7 +52,7 @@ function DropView(props){
 				}}
 				className={props.cls}
 				>
-					<TransformWrapper>
+				{	/*<TransformWrapper>
 						<TransformComponent>
 							<img className="xrdImage" src={"http://" + 
 								props.connectAddress + 
@@ -58,8 +60,47 @@ function DropView(props){
 								props.csvData[props.selectedData]["FILE_image_path"]} 
 							alt=""/>
 						</TransformComponent>
-					</TransformWrapper>
-					
+					</TransformWrapper>*/}
+					<Plot
+						data={[
+							{
+								x: [0, img_width],
+								y: [0, img_height],
+								mode: "markers",
+								marker_opacity:0,
+							}
+						]}
+						layout={{
+							autosize: true,
+							images:[
+							{
+								"source": "http://" + 
+								props.connectAddress + 
+								"/" + 
+								props.csvData[props.selectedData]["FILE_image_path"],
+								
+								xref:"x",
+								yref:"y",
+								x:0,
+								y:img_height,
+								sizex: img_width,
+								sizey: img_height,
+								layer: "below",
+								sizing: "stretch",
+							}	
+							],
+							xaxis: {
+								visible: false,
+							},
+							yaxis: {
+								visible: false
+							},
+							margin: {"l":0, "r":0, "t":0, "b":0},
+						}}
+						useResizeHandler={true}
+						style={ {height:"100%",width:"100%"} }
+						config={{'doubleClick': 'reset'}}
+						/>
 				</div>
 			);
 		case "xyGraph":
@@ -117,6 +158,7 @@ function DropView(props){
 						useResizeHandler={true}
 						revision="0"
 						style={ {height:"100%",width:"100%"} }
+						config={{doubleClickDelay: 1000}}
 						onClick={(e) => props.selectedDataUpdater(e.points[0].curveNumber)}
 					/>
 				</div>

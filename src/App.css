@@ -188,7 +188,7 @@ img {
 .Quads .two {
   background-color: yellow;
   grid-column-start: 2;
-  grid-column-end: span 2;
+  grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: span 1;
   margin: 10px;
