@@ -84,7 +84,8 @@ function DropView(props){
 								visible: false,
 							},
 							yaxis: {
-								visible: false
+								visible: false,
+								scaleanchor: "x",
 							},
 							margin: {"l":0, "r":0, "t":0, "b":0},
 						}}
