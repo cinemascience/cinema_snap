@@ -246,6 +246,7 @@ class App extends React.Component {
 
 {/* The Parallel Coordinate Chart */}
 function ParallelCoordinateView(props) {
+	var shot = []
 	var chi = []
 	var chi_increment = []
 	var count_cutoff = []
@@ -260,6 +261,7 @@ function ParallelCoordinateView(props) {
 	var threshold_setting = []
 	var wavelength = []
 	for (const point in props.csvData){
+		shot.push(point)
 		chi.push(props.csvData[point][" Chi"])
 		chi_increment.push(props.csvData[point][" Chi increment"])
 		count_cutoff.push(props.csvData[point][" Count cutoff"])
@@ -274,8 +276,6 @@ function ParallelCoordinateView(props) {
 		wavelength.push(props.csvData[point][" Wavelength"])
 	}
 
-	let chi_max = Math.max(chi.map(Number))
-	let chi_min = Math.min(chi.map(Number))
 
 	var trace = {
 		type: 'parcoords',
@@ -284,6 +284,10 @@ function ParallelCoordinateView(props) {
 		},
 
 		dimensions: [{
+			label: "Shot",
+			values: shot
+		},
+		{
 			label: "Chi",
 			values: chi
 		},
