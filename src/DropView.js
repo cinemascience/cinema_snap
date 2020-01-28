@@ -4,7 +4,6 @@ import { dropped } from './DropLogic'
 import ItemTypes from './ItemTypes'
 import Papa from 'papaparse';
 import Plot from 'react-plotly.js';
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import './App.css';
 
 function DropView(props){

@@ -28,6 +28,8 @@ class App extends React.Component {
 		csvData: undefined,
 		connectAddress: undefined,
 		dataRevision: 0,
+		ParallelCoordinateSelections: {},
+		activeData: {},
 		xyTraces: [],
 		pvTraces: [],
 		ltTraces: [],
@@ -47,6 +49,7 @@ class App extends React.Component {
 	this.updateAddress = this.updateAddress.bind(this);
 	this.updateSelectedLayout = this.updateSelectedLayout.bind(this);
 	this.connectToAddress = this.connectToAddress.bind(this);
+	this.updateParallelCoordinateSelections = this.updateParallelCoordinateSelections.bind(this)
   }
 
   //Handler function for the currently selected views
@@ -89,6 +92,30 @@ class App extends React.Component {
   updateAddress(event) {
 	this.setState({
 		connectAddress : event.target.value,
+	});
+  }
+
+  //A way to make selections from the styling calls. 
+  updateParallelCoordinateSelections(e, trace) {
+	try {
+		var dimension = Object.keys(e[0])[0].split("[")[1].split("]")[0];
+	}
+	catch(err) {
+		return;
+	}
+	console.log(dimension)
+	try {
+		var selections = e[0]["dimensions[" + dimension + "].constraintrange"][0];
+	}
+	catch(err) {
+		var selections = e[0]["dimensions[" + dimension + "].constraintrange"];
+	}
+	var x = this.state.ParallelCoordinateSelections
+	x[trace.dimensions[dimension].label] = selections;
+	console.log(selections);
+	console.log(trace);
+	this.setState({
+		ParallelCoordinateSelections: x,
 	});
   }
 
@@ -214,7 +241,7 @@ class App extends React.Component {
 	    <div className="App">
 	  	{/* DndProvider specifies what backend the drag and drop code should use*/}
 		<DndProvider backend={HTML5Backend}>
-		  <ParallelCoordinateView csvData={this.state.csvData}/>
+		  <ParallelCoordinateView csvData={this.state.csvData} selectionUpdater={this.updateParallelCoordinateSelections}/>
 	          <div class="Address">
 		    <InputGroup className="mb-3">
 	    		<Form.Control size="sm" type="text" placeholder="Enter Database Serving Address"
@@ -304,10 +331,6 @@ function ParallelCoordinateView(props) {
 			values: exposure_period
 		},
 		{
-			label: "Exposure Time",
-			values: exposure_time
-		},
-		{
 			label: "Number of Oscillations",
 			values: number_of_oscillations
 		},
@@ -341,12 +364,13 @@ function ParallelCoordinateView(props) {
 				data={[trace]}
 				layout={ {title: 'Parallel Coordinate Plot',
 						autosize: true,
+						uirevision: 1,
 						margin: {l: 50, r: 50, b: 30, t: 80, pad: 4},
 						y: 0
 				} }
 				useResizeHandler={true}
 				style={ {height:"100%",width:"100%"} }
-				onRestyle={(e) => {console.log(e)}}
+				onRestyle={(e) => props.selectionUpdater(e, trace)}
 			/>
 		</div> 
 	);
