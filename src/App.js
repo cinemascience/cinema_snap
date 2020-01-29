@@ -17,7 +17,6 @@ import Plot from 'react-plotly.js';
 import DropView from './DropView.js';
 import './App.css';
 
-
 class App extends React.Component {
   constructor(props) {
 	super(props);
@@ -84,7 +83,8 @@ class App extends React.Component {
   //Handler function for the currently selected data.csv file
   updateSelectedCSV(result) {
 	this.setState({
-		csvData : result.data
+		csvData : result.data,
+		activeData: result.data
 	});
   }
 
@@ -94,6 +94,7 @@ class App extends React.Component {
 		connectAddress : event.target.value,
 	});
   }
+
 
   //A way to make selections from the styling calls. 
   updateParallelCoordinateSelections(e, trace) {
@@ -116,7 +117,77 @@ class App extends React.Component {
 	console.log(trace);
 	this.setState({
 		ParallelCoordinateSelections: x,
+	}, () => this.updateActive());
+  }
+
+  //A function to trim down the active selections after a Parallel Coordinate Filtering
+  updateActive() {
+	var masterList = [...this.state.csvData];
+	var trimList = [...this.state.csvData];
+	var filters = this.state.ParallelCoordinateSelections;
+	for (const filter in filters) {
+		//Check what kind of filter we have to deal with
+		if(filters[filter] === null){
+			//Things to do when the filter is null (has been removed)
+			continue;
+		} else if (Array.isArray(filters[filter][0])){
+			//Things to do when there are multiple filters on one coordinate
+		} else {
+			//Things to do when we have a normal single filter
+			for (const line in masterList) {
+				var relevantValue = masterList[line][filter];
+				if(typeof relevantValue === 'undefined'){
+					console.log("Issue getting the relevant value in the csv file for the filter applied\n" + 
+						"line: " + line + " filter: " + filter);
+					continue;
+				}
+				if(!(filters[filter][0] < relevantValue && relevantValue < filters[filter][1])){
+					trimList.splice(trimList.indexOf(masterList[line]), 1);
+				}
+			}
+		}
+	}
+	
+	//Make a new dataset for the xy_traces
+	var xy_files = [];
+	var xy_traces = [];
+	for (const line in trimList) {
+		xy_files.push(trimList[line]["FILE_spectra_path"])
+	}
+	for (const file in xy_files){
+		var path = xy_files[file]
+		Papa.parse("http://" + this.state.connectAddress + "/" + path, {
+			download: true,
+			complete: function(results) {
+				var x_array = []
+				var y_array = []
+				for (const line in results["data"]) {
+					var point = results["data"][line][0]
+					var components = point.split("  ");
+					x_array.push(Number(components[0]));
+					y_array.push(Number(components[1]));
+				}
+				var trace = {x: x_array, y: y_array, type: 'scatter'}
+				xy_traces.push(trace);
+			}
+		});
+	}
+
+	var newFinalDataset = JSON.parse(JSON.stringify(this.state.finalDataset));
+	newFinalDataset["xyTraces"] = xy_traces;
+
+	
+	this.setState({
+		activeData: trimList,
+		finalDataset: newFinalDataset,
 	});
+	
+	
+	this.intervalID = setTimeout(
+		() => this.increaseDataRevision(),
+		1000
+	);
+	
   }
 
   //Callback to activate the connection
@@ -124,7 +195,10 @@ class App extends React.Component {
 	Papa.parse("http://" + this.state.connectAddress + "/data.csv", {
 		download: true,
 		header: true,
+		transformHeader: (d) => {return d.trim()},
+		skipEmptyLines: true,
 		complete: (results) => {
+			console.log(results);
 			this.updateSelectedCSV(results)
 			
 			//process azmuthally integrated data
@@ -289,18 +363,18 @@ function ParallelCoordinateView(props) {
 	var wavelength = []
 	for (const point in props.csvData){
 		shot.push(point)
-		chi.push(props.csvData[point][" Chi"])
-		chi_increment.push(props.csvData[point][" Chi increment"])
-		count_cutoff.push(props.csvData[point][" Count cutoff"])
-		detector_distance.push(props.csvData[point][" Detector Distance"])
-		exposure_period.push(props.csvData[point][" Exposure period"])
-		number_of_oscillations.push(props.csvData[point][" Number of Oscillations"])
-		phi.push(props.csvData[point][" Phi"])
-		phi_increment.push(props.csvData[point][" Phi increment"])
-		start_angle.push(props.csvData[point][" Start Angle"])
-		tau.push(props.csvData[point][" Tau"])
-		threshold_setting.push(props.csvData[point][" Threshold setting"])
-		wavelength.push(props.csvData[point][" Wavelength"])
+		chi.push(props.csvData[point]["Chi"])
+		chi_increment.push(props.csvData[point]["Chi increment"])
+		count_cutoff.push(props.csvData[point]["Count cutoff"])
+		detector_distance.push(props.csvData[point]["Detector Distance"])
+		exposure_period.push(props.csvData[point]["Exposure period"])
+		number_of_oscillations.push(props.csvData[point]["Number of Oscillations"])
+		phi.push(props.csvData[point]["Phi"])
+		phi_increment.push(props.csvData[point]["Phi increment"])
+		start_angle.push(props.csvData[point]["Start Angle"])
+		tau.push(props.csvData[point]["Tau"])
+		threshold_setting.push(props.csvData[point]["Threshold setting"])
+		wavelength.push(props.csvData[point]["Wavelength"])
 	}
 
 
@@ -365,6 +439,7 @@ function ParallelCoordinateView(props) {
 				layout={ {title: 'Parallel Coordinate Plot',
 						autosize: true,
 						uirevision: 1,
+						selectionrevision: 1,
 						margin: {l: 50, r: 50, b: 30, t: 80, pad: 4},
 						y: 0
 				} }
