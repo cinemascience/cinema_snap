@@ -133,6 +133,24 @@ class App extends React.Component {
 			continue;
 		} else if (Array.isArray(filters[filter][0])){
 			//Things to do when there are multiple filters on one coordinate
+			for (const line in masterList){
+				var remove = true;
+				var relevantValue = masterList[line][filter];
+				//Check if the value is in any of the filters
+				for (const f in filters[filter]) {
+					if(filters[filter][f][0] < relevantValue && relevantValue < filters[filter][f][1]){
+						remove = false;
+					}
+				}
+				//If it wasn't in any of the filters remove the line
+				if(remove === true){
+					//Don't try to remove something that's not there
+					if(trimList.indexOf(masterList[line]) === -1){
+						continue;
+					}
+					trimList.splice(trimList.indexOf(masterList[line]), 1);
+				}
+			}
 		} else {
 			//Things to do when we have a normal single filter
 			for (const line in masterList) {
@@ -143,6 +161,10 @@ class App extends React.Component {
 					continue;
 				}
 				if(!(filters[filter][0] < relevantValue && relevantValue < filters[filter][1])){
+					//Don't try to remove something that's not there
+					if(trimList.indexOf(masterList[line]) === -1){
+						continue;
+					}
 					trimList.splice(trimList.indexOf(masterList[line]), 1);
 				}
 			}
@@ -191,7 +213,7 @@ class App extends React.Component {
 	
   }
 
-  //Callback to activate the connection
+  //Callback to activate the connection and preload the needed data
   connectToAddress(event) {
 	Papa.parse("http://" + this.state.connectAddress + "/data.csv", {
 		download: true,
