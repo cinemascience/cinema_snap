@@ -2,7 +2,7 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 
 {/* The Parallel Coordinate Chart */}
-class ParallelCoordinates extends React.Component {
+class ParallelCoordinates extends React.PureComponent {
 	constructor(props){
 		super(props);
 	}
