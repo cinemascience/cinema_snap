@@ -22,7 +22,6 @@ class ParallelCoordinates extends React.PureComponent {
 		var threshold_setting = []
 		var wavelength = []
 		for (const point in this.props.csvData){
-			shot.push(point)
 			chi.push(this.props.csvData[point]["Chi"])
 			chi_increment.push(this.props.csvData[point]["Chi increment"])
 			count_cutoff.push(this.props.csvData[point]["Count cutoff"])
@@ -44,10 +43,7 @@ class ParallelCoordinates extends React.PureComponent {
 				color: 'blue'
 			},
 
-			dimensions: [{
-				label: "Shot",
-				values: shot
-			},
+			dimensions: [
 			{
 				label: "Chi",
 				values: chi
