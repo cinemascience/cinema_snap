@@ -22,7 +22,7 @@ class App extends React.Component {
   constructor(props) {
 	super(props);
 	this.state = {
-		selectedData : 1, 
+		selectedData : 1,
 		selectedViews : {},
 		selectedLayout : undefined,
 		csvData: undefined,
@@ -97,7 +97,7 @@ class App extends React.Component {
   }
 
 
-  //A way to make selections from the styling calls. 
+  //A way to make selections from the styling calls.
   updateParallelCoordinateSelections(e, trace) {
 	try {
 		var dimension = Object.keys(e[0])[0].split("[")[1].split("]")[0];
@@ -156,7 +156,7 @@ class App extends React.Component {
 			for (const line in masterList) {
 				var relevantValue = masterList[line][filter];
 				if(typeof relevantValue === 'undefined'){
-					console.log("Issue getting the relevant value in the csv file for the filter applied\n" + 
+					console.log("Issue getting the relevant value in the csv file for the filter applied\n" +
 						"line: " + line + " filter: " + filter);
 					continue;
 				}
@@ -170,7 +170,7 @@ class App extends React.Component {
 			}
 		}
 	}
-	
+
 	//Make a new dataset for the xy_traces
 	var xy_files = [];
 	var xy_traces = [];
@@ -185,10 +185,9 @@ class App extends React.Component {
 				var x_array = []
 				var y_array = []
 				for (const line in results["data"]) {
-					var point = results["data"][line][0]
-					var components = point.split("  ");
-					x_array.push(Number(components[0]));
-					y_array.push(Number(components[1]));
+					var point = results["data"][line]
+					x_array.push(Number(point[0]));
+					y_array.push(Number(point[1]));
 				}
 				var trace = {x: x_array, y: y_array, type: 'scatter'}
 				xy_traces.push(trace);
@@ -199,18 +198,18 @@ class App extends React.Component {
 	var newFinalDataset = JSON.parse(JSON.stringify(this.state.finalDataset));
 	newFinalDataset["xyTraces"] = xy_traces;
 
-	
+
 	this.setState({
 		activeData: trimList,
 		finalDataset: newFinalDataset,
 	});
-	
-	
+
+
 	this.intervalID = setTimeout(
 		() => this.increaseDataRevision(),
 		1000
 	);
-	
+
   }
 
   //Callback to activate the connection and preload the needed data
@@ -223,7 +222,7 @@ class App extends React.Component {
 		complete: (results) => {
 			console.log(results);
 			this.updateSelectedCSV(results)
-			
+
 			//process azmuthally integrated data
 			var xy_files = [];
 			var xy_traces = [];
@@ -238,10 +237,9 @@ class App extends React.Component {
 						var x_array = []
 						var y_array = []
 						for (const line in results["data"]) {
-							var point = results["data"][line][0]
-							var components = point.split("  ");
-							x_array.push(Number(components[0]));
-							y_array.push(Number(components[1]));
+							var point = results["data"][line]
+							x_array.push(Number(point[0]));
+							y_array.push(Number(point[1]));
 						}
 						var trace = {x: x_array, y: y_array, type: 'scatter'}
 						xy_traces.push(trace);
@@ -258,6 +256,9 @@ class App extends React.Component {
 					var x_array = []
 					var y_array = []
 					for (const line in results["data"]) {
+            if(results["data"][line][0] === ""){
+              continue;
+            }
 						x_array.push(Number(results["data"][line][1]));
 						y_array.push(Number(results["data"][line][2]));
 					}
@@ -276,6 +277,9 @@ class App extends React.Component {
 					var x_array = []
 					var y_array = []
 					for (const line in results["data"]) {
+            if(results["data"][line][0] === ""){
+              continue;
+            }
 						x_array.push(Number(results["data"][line][1]));
 						y_array.push(Number(results["data"][line][2]));
 					}
@@ -284,7 +288,7 @@ class App extends React.Component {
 				}
 			});
 			}
-			
+
 			//process the heatmap/contour diagram data
 			var con_traces = []
 			if(typeof this.state.csvData != "undefined"){
@@ -329,12 +333,12 @@ class App extends React.Component {
 
 
 
-	
+
   }
 
   //This is the primary rendering function for the entire app, everything else cascades from here.
   render () {
-	    return ( 
+	    return (
 	    <div className="App">
 	  	{/* DndProvider specifies what backend the drag and drop code should use*/}
 		<DndProvider backend={HTML5Backend}>
@@ -368,7 +372,7 @@ class App extends React.Component {
   };
 }
 
-{/* The data view selector box */} 
+{/* The data view selector box */}
 function GridSelector() {
 	return (
 		<div className="GridSelector">
@@ -399,10 +403,10 @@ function DataViewGrid(props) {
 		case 'One and Two':
 			return (
 				<div className="DataViewGrid">
-				<GridOneAndTwo 
-					selectedViews={props.selectedViews} 
+				<GridOneAndTwo
+					selectedViews={props.selectedViews}
 		    			finalDataset={props.finalDataset}
-					viewUpdater={props.viewUpdater} 
+					viewUpdater={props.viewUpdater}
 		    			selectedDataUpdater={props.selectedDataUpdater}
 					selectedData={props.selectedData}
 					connectAddress={props.connectAddress}
@@ -414,9 +418,9 @@ function DataViewGrid(props) {
 			return (
 				<div className="DataViewGrid">
 				<GridOneAndOneHorizontal
-					selectedViews={props.selectedViews} 
+					selectedViews={props.selectedViews}
 		    			finalDataset={props.finalDataset}
-					viewUpdater={props.viewUpdater} 
+					viewUpdater={props.viewUpdater}
 		    			selectedDataUpdater={props.selectedDataUpdater}
 					selectedData={props.selectedData}
 					connectAddress={props.connectAddress}
@@ -428,9 +432,9 @@ function DataViewGrid(props) {
 			return (
 				<div className="DataViewGrid">
 				<GridOneAndOneVertical
-					selectedViews={props.selectedViews} 
+					selectedViews={props.selectedViews}
 		    			finalDataset={props.finalDataset}
-					viewUpdater={props.viewUpdater} 
+					viewUpdater={props.viewUpdater}
 		    			selectedDataUpdater={props.selectedDataUpdater}
 					selectedData={props.selectedData}
 					connectAddress={props.connectAddress}
@@ -442,10 +446,10 @@ function DataViewGrid(props) {
 		default:
 			return (
 				<div className="DataViewGrid">
-				<GridQuads 
-					selectedViews={props.selectedViews} 
+				<GridQuads
+					selectedViews={props.selectedViews}
 		    			finalDataset={props.finalDataset}
-					viewUpdater={props.viewUpdater} 
+					viewUpdater={props.viewUpdater}
 		    			selectedDataUpdater={props.selectedDataUpdater}
 					selectedData={props.selectedData}
 					connectAddress={props.connectAddress}
@@ -478,7 +482,7 @@ function DataView(props) {
 function GridOneAndTwo(props) {
 	return (
 		<div className="OneAndTwo">
-			<DropView cls="one" 
+			<DropView cls="one"
 				selectedViews={props.selectedViews}
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
@@ -487,8 +491,8 @@ function GridOneAndTwo(props) {
 				connectAddress={props.connectAddress}
 		    		dataRevision={props.dataRevision}
 				viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="two" 
-				selectedViews={props.selectedViews} 
+			<DropView cls="two"
+				selectedViews={props.selectedViews}
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
 		    		selectedDataUpdater={props.selectedDataUpdater}
@@ -496,8 +500,8 @@ function GridOneAndTwo(props) {
 				connectAddress={props.connectAddress}
 		    		dataRevision={props.dataRevision}
 				viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="three" 
-				selectedViews={props.selectedViews} 
+			<DropView cls="three"
+				selectedViews={props.selectedViews}
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
 		    		selectedDataUpdater={props.selectedDataUpdater}
@@ -512,8 +516,8 @@ function GridOneAndTwo(props) {
 function GridOneAndOneHorizontal(props) {
 	return (
 		<div className="OneAndOneHorizontal">
-			<DropView cls="one" 
-				selectedViews={props.selectedViews} 
+			<DropView cls="one"
+				selectedViews={props.selectedViews}
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
 		    		selectedDataUpdater={props.selectedDataUpdater}
@@ -521,8 +525,8 @@ function GridOneAndOneHorizontal(props) {
 		    		dataRevision={props.dataRevision}
 				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="two" 
-				selectedViews={props.selectedViews} 
+			<DropView cls="two"
+				selectedViews={props.selectedViews}
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
 		    		selectedDataUpdater={props.selectedDataUpdater}
@@ -537,8 +541,8 @@ function GridOneAndOneHorizontal(props) {
 function GridOneAndOneVertical(props) {
 	return (
 		<div className="OneAndOneVertical">
-			<DropView cls="one" 
-				selectedViews={props.selectedViews} 
+			<DropView cls="one"
+				selectedViews={props.selectedViews}
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
 		    		selectedDataUpdater={props.selectedDataUpdater}
@@ -546,8 +550,8 @@ function GridOneAndOneVertical(props) {
 		    		dataRevision={props.dataRevision}
 				connectAddress={props.connectAddress}
 				viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="two" 
-				selectedViews={props.selectedViews} 
+			<DropView cls="two"
+				selectedViews={props.selectedViews}
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
 		    		selectedDataUpdater={props.selectedDataUpdater}
@@ -562,8 +566,8 @@ function GridOneAndOneVertical(props) {
 function GridQuads(props) {
 	return (
 		<div className="Quads">
-			<DropView cls="one" 
-				selectedViews={props.selectedViews} 
+			<DropView cls="one"
+				selectedViews={props.selectedViews}
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
 		    		selectedDataUpdater={props.selectedDataUpdater}
@@ -571,8 +575,8 @@ function GridQuads(props) {
 				connectAddress={props.connectAddress}
 		    		dataRevision={props.dataRevision}
 				viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="two" 
-				selectedViews={props.selectedViews} 
+			<DropView cls="two"
+				selectedViews={props.selectedViews}
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
 		    		selectedDataUpdater={props.selectedDataUpdater}
@@ -580,8 +584,8 @@ function GridQuads(props) {
 				connectAddress={props.connectAddress}
 		    		dataRevision={props.dataRevision}
 				viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="three" 
-				selectedViews={props.selectedViews} 
+			<DropView cls="three"
+				selectedViews={props.selectedViews}
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
 		    		selectedDataUpdater={props.selectedDataUpdater}
@@ -589,8 +593,8 @@ function GridQuads(props) {
 				connectAddress={props.connectAddress}
 		    		dataRevision={props.dataRevision}
 				viewUpdater={props.viewUpdater}></DropView>
-			<DropView cls="four" 
-				selectedViews={props.selectedViews} 
+			<DropView cls="four"
+				selectedViews={props.selectedViews}
 		    		finalDataset={props.finalDataset}
 				csvData={props.csvData}
 		    		selectedDataUpdater={props.selectedDataUpdater}
