@@ -378,8 +378,8 @@ function GridSelector() {
 		<div className="GridSelector">
 		<DataView type="xyGraph" name="Intensity VS Angle"/>
 		<DataView type="image" name="XRD Image"/>
-		<DataView type="pvChart" name="Pressure VS Volume"/>
-		<DataView type="latticeVSTime" name="Lattice VS Time"/>
+		<DataView type="pvChart" name="Pressure VS Frame"/>
+		<DataView type="latticeVSTime" name="Lattice VS Frame"/>
 		<DataView type="contourDiagram" name="Contour Diagram"/>
 		</div>
 	);

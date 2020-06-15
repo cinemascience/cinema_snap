@@ -127,7 +127,7 @@ function DropView(props){
 								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
 								  xaxis: {
 								    title: {
-								      text: 'X-ray Diffraction Angle',
+								      text: '<b>2 theta</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
@@ -137,7 +137,7 @@ function DropView(props){
 								  },
 								  yaxis: {
 								    title: {
-								      text: 'Intensity',
+								      text: '<b>Intensity</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
@@ -181,14 +181,14 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.pvTraces}
-						layout={ {title: 'Pressure vs. Volume plot',
+						layout={ {title: 'Pressure vs. Frame plot',
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1, 
 								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
 								  xaxis: {
 								    title: {
-								      text: 'Pressure',
+								      text: '<b>Frame</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
@@ -198,7 +198,7 @@ function DropView(props){
 								  },
 								  yaxis: {
 								    title: {
-								      text: 'Volume',
+								      text: '<b>Pressure</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
@@ -253,14 +253,14 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.ltTraces}
-						layout={ {title: 'Lattice vs. Time plot',
+						layout={ {title: 'Lattice vs. Frame plot',
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1,
 								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
 								  xaxis: {
 								    title: {
-								      text: 'Time',
+								      text: '<b>Frame</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
@@ -270,7 +270,7 @@ function DropView(props){
 								  },
 								  yaxis: {
 								    title: {
-								      text: 'Lattice Constant',
+								      text: '<b>Lattice Constant</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
@@ -332,7 +332,7 @@ function DropView(props){
 								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},
 								  xaxis: {
 								    title: {
-								      text: 'X-ray Diffraction Angle',
+								      text: '<b>X-ray Diffraction Angle</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
@@ -342,7 +342,7 @@ function DropView(props){
 								  },
 								  yaxis: {
 								    title: {
-								      text: 'Shot number',
+								      text: '<b>Frame</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
