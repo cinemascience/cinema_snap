@@ -214,7 +214,7 @@ class App extends React.Component {
 
   //Callback to activate the connection and preload the needed data
   connectToAddress(event) {
-	Papa.parse("http://" + this.state.connectAddress + "/data.csv", {
+	Papa.parse("http://" + this.state.connectAddress + "/data.csv" + "?_=" + (new Date).getTime(), {
 		download: true,
 		header: true,
 		transformHeader: (d) => {return d.trim()},
