@@ -32,11 +32,17 @@ class App extends React.Component {
 		activeData: {},
 		xyTraces: [],
 		pvTraces: [],
+                pTraces: [],
+                pdotTraces: [],
+                pdotdotTrace: [],
 		ltTraces: [],
 		conTraces: [],
 		finalDataset : {
 			xyTraces: [],
 			pvTraces: [],
+                        pTraces: [],
+                        pdotTraces: [],
+                        pdotdotTrace: [],
 			ltTraces: [],
 			conTraces: [],
 		},
@@ -268,6 +274,69 @@ class App extends React.Component {
 			});
 			}
 
+                        //process pressure fit vs frame
+                        var p_traces = [];
+                        if(typeof this.state.csvData != "undefined"){
+                        Papa.parse("http://" + this.state.connectAddress + "/" + this.state.csvData[0]["FILE_pfit_path"], {
+                                download: true,
+                                complete: function(results) {
+                                        var x_array = []
+                                        var y_array = []
+                                        for (const line in results["data"]) {
+            if(results["data"][line][0] === ""){
+              continue;
+            }
+                                                x_array.push(Number(results["data"][line][0]));
+                                                y_array.push(Number(results["data"][line][1]));
+                                        }
+                                        var trace = {x: x_array, y: y_array, type: 'scatter'}
+                                        p_traces.push(trace)
+                                }
+                        });
+                        }
+
+                        //process pressure fit derivative vs frame
+                        var pdot_traces = [];
+                        if(typeof this.state.csvData != "undefined"){
+                        Papa.parse("http://" + this.state.connectAddress + "/" + this.state.csvData[0]["FILE_pfitdot_path"], {
+                                download: true,
+                                complete: function(results) {
+                                        var x_array = []
+                                        var y_array = []
+                                        for (const line in results["data"]) {
+            if(results["data"][line][0] === ""){
+              continue;
+            }
+                                                x_array.push(Number(results["data"][line][0]));
+                                                y_array.push(Number(results["data"][line][1]));
+                                        }
+                                        var trace = {x: x_array, y: y_array, type: 'scatter'}
+                                        pdot_traces.push(trace)
+                                }
+                        });
+                        }
+
+                        //process pressure fit derivative vs frame
+                        var pdotdot_traces = [];
+                        if(typeof this.state.csvData != "undefined"){
+                        Papa.parse("http://" + this.state.connectAddress + "/" + this.state.csvData[0]["FILE_pfitdotdot_path"], {
+                                download: true,
+                                complete: function(results) {
+                                        var x_array = []
+                                        var y_array = []
+                                        for (const line in results["data"]) {
+            if(results["data"][line][0] === ""){
+              continue;
+            }
+                                                x_array.push(Number(results["data"][line][0]));
+                                                y_array.push(Number(results["data"][line][1]));
+                                        }
+                                        var trace = {x: x_array, y: y_array, type: 'scatter'}
+                                        pdotdot_traces.push(trace)
+                                }
+                        });
+                        }
+
 			//process lattice vs time data
 			var lt_traces = []
 			if(typeof this.state.csvData != "undefined"){
@@ -320,7 +389,7 @@ class App extends React.Component {
 			}
 
 			this.setState({
-				finalDataset : {"xyTraces":xy_traces, "pvTraces":pv_traces, "ltTraces":lt_traces, "conTraces": con_traces},
+				finalDataset : {"xyTraces":xy_traces, "pvTraces":pv_traces, "ltTraces":lt_traces, "conTraces": con_traces, "pTraces":p_traces, "pdotTraces":pdot_traces, "pdotdotTraces":pdotdot_traces},
 			});
 
 			this.intervalID = setTimeout(
@@ -379,6 +448,9 @@ function GridSelector() {
 		<DataView type="xyGraph" name="Intensity VS Angle"/>
 		<DataView type="image" name="XRD Image"/>
 		<DataView type="pvChart" name="Pressure VS Frame"/>
+                <DataView type="pChart" name="Pressure Fit VS Frame"/>
+                <DataView type="pdotChart" name="Pressure Fit 1st Derivative VS Frame"/>
+                <DataView type="pdotdotChart" name="Pressure Fit 2nd Derivative VS Frame"/>
 		<DataView type="latticeVSTime" name="Lattice VS Frame"/>
 		<DataView type="contourDiagram" name="Contour Diagram"/>
 		</div>
