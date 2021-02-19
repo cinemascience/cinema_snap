@@ -89,18 +89,13 @@ class App extends React.Component {
 
   //Handler function for the currently selected data.csv file
   updateSelectedCSV(result) {
-
-        console.log("A", result.data[0])
-
-        var parameter_columns = []
-
         // add label and values for each parameter to trace
+        var parameter_columns = []
         for (const key in result.data[0]){
             if (!key.includes("FILE") && !key.includes("path")){
                 parameter_columns.push(key)
             }
        }
-
 	this.setState({
                 parameter_columns : parameter_columns,
                 file_columns : [],
