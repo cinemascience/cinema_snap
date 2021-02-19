@@ -23,16 +23,16 @@ class ParallelCoordinates extends React.PureComponent {
 		var wavelength = []
 		for (const point in this.props.csvData){
 			chi.push(this.props.csvData[point]["Chi"])
-			chi_increment.push(this.props.csvData[point]["Chi increment"])
-			count_cutoff.push(this.props.csvData[point]["Count cutoff"])
-			detector_distance.push(this.props.csvData[point]["Detector Distance"])
-			exposure_period.push(this.props.csvData[point]["Exposure period"])
-			number_of_oscillations.push(this.props.csvData[point]["Number of Oscillations"])
+			chi_increment.push(this.props.csvData[point]["Chi_increment"])
+			count_cutoff.push(this.props.csvData[point]["Count_cutoff"])
+			detector_distance.push(this.props.csvData[point]["Detector_distance"])
+			exposure_period.push(this.props.csvData[point]["Exposure_period"])
+			number_of_oscillations.push(this.props.csvData[point]["N_oscillations"])
 			phi.push(this.props.csvData[point]["Phi"])
-			phi_increment.push(this.props.csvData[point]["Phi increment"])
-			start_angle.push(this.props.csvData[point]["Start Angle"])
+			phi_increment.push(this.props.csvData[point]["Phi_increment"])
+			start_angle.push(this.props.csvData[point]["Start_angle"])
 			tau.push(this.props.csvData[point]["Tau"])
-			threshold_setting.push(this.props.csvData[point]["Threshold setting"])
+			threshold_setting.push(this.props.csvData[point]["Threshold_setting"])
 			wavelength.push(this.props.csvData[point]["Wavelength"])
 		}
 
