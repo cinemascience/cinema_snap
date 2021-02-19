@@ -122,7 +122,7 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.xyTraces}
-						layout={ {title: 'Intensity vs. Angle plot',
+						layout={ {title: 'Intensity vs Angle',
 								autosize: true,
 								datarevision: props.dataRevision,
 								uirevision: 1,
@@ -130,7 +130,7 @@ function DropView(props){
 								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
 								  xaxis: {
 								    title: {
-								      text: '<b>2 theta</b>',
+								      text: '<b>2&#952; (deg.)</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
@@ -140,7 +140,7 @@ function DropView(props){
 								  },
 								  yaxis: {
 								    title: {
-								      text: '<b>Intensity</b>',
+								      text: '<b>Normalized Intensity</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
@@ -184,7 +184,7 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.pvTraces}
-						layout={ {title: 'Pressure vs. Frame plot',
+						layout={ {title: 'Pressure vs Frame',
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1, 
@@ -257,7 +257,7 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.pTraces}
-						layout={ {title: 'Pressure Fit vs. Frame plot',
+						layout={ {title: 'Pressure Fit vs Frame',
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1, 
@@ -330,7 +330,7 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.pdotTraces}
-						layout={ {title: 'Pressure Fit 1st Derivative vs. Frame plot',
+						layout={ {title: 'Pressure Fit 1st Derivative vs Frame',
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1, 
@@ -347,7 +347,7 @@ function DropView(props){
 								  },
 								  yaxis: {
 								    title: {
-								      text: '<b>Pressure Fit 1st Derivative</b>',
+								      text: '<b>Pressure Fit 1st Deriv.</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
@@ -403,7 +403,7 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.pdotdotTraces}
-						layout={ {title: 'Pressure Fit 2nd Derivative vs. Frame plot',
+						layout={ {title: 'Pressure Fit 2nd Derivative vs Frame',
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1, 
@@ -420,7 +420,7 @@ function DropView(props){
 								  },
 								  yaxis: {
 								    title: {
-								      text: '<b>Pressure Fit 2nd Derivative</b>',
+								      text: '<b>Pressure Fit 2nd Deriv.</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
@@ -476,7 +476,7 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.ltTraces}
-						layout={ {title: 'Lattice vs. Frame plot',
+						layout={ {title: 'Lattice Constant vs Frame',
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1,
@@ -548,14 +548,14 @@ function DropView(props){
 					<Plot
 						data={props.finalDataset.conTraces}
 						layout={ 
-							{title: 'Contour Diagram',
+							{title: 'Intensity vs Frame Contour Diagram',
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1,
 								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},
 								  xaxis: {
 								    title: {
-								      text: '<b>X-ray Diffraction Angle</b>',
+								      text: '<b>2&#952; (deg.)</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,

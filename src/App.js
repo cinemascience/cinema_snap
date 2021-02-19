@@ -445,14 +445,14 @@ class App extends React.Component {
 function GridSelector() {
 	return (
 		<div className="GridSelector">
-		<DataView type="xyGraph" name="Intensity VS Angle"/>
-		<DataView type="image" name="XRD Image"/>
-		<DataView type="pvChart" name="Pressure VS Frame"/>
-                <DataView type="pChart" name="Pressure Fit VS Frame"/>
-                <DataView type="pdotChart" name="Pressure Fit 1st Derivative VS Frame"/>
-                <DataView type="pdotdotChart" name="Pressure Fit 2nd Derivative VS Frame"/>
-		<DataView type="latticeVSTime" name="Lattice VS Frame"/>
-		<DataView type="contourDiagram" name="Contour Diagram"/>
+                <DataView type="image" name="XRD Image"/>
+		<DataView type="xyGraph" name="Intensity vs Angle"/>
+                <DataView type="contourDiagram" name="Contour Diagram"/>
+                <DataView type="latticeVSTime" name="Lattice vs Frame"/>
+		<DataView type="pvChart" name="Pressure vs Frame"/>
+                <DataView type="pChart" name="Pressure Fit vs Frame"/>
+                <DataView type="pdotChart" name="dPressure Fit vs Frame"/>
+                <DataView type="pdotdotChart" name="d2Pressure Fit vs Frame"/>
 		</div>
 	);
 }
