@@ -89,7 +89,21 @@ class App extends React.Component {
 
   //Handler function for the currently selected data.csv file
   updateSelectedCSV(result) {
+
+        console.log("A", result.data[0])
+
+        var parameter_columns = []
+
+        // add label and values for each parameter to trace
+        for (const key in result.data[0]){
+            if (!key.includes("FILE") && !key.includes("path")){
+                parameter_columns.push(key)
+            }
+       }
+
 	this.setState({
+                parameter_columns : parameter_columns,
+                file_columns : [],
 		csvData : result.data,
 		activeData: result.data
 	});
@@ -411,7 +425,7 @@ class App extends React.Component {
 	    <div className="App">
 	  	{/* DndProvider specifies what backend the drag and drop code should use*/}
 		<DndProvider backend={HTML5Backend}>
-		  <ParallelCoordinates csvData={this.state.csvData} selectionUpdater={this.updateParallelCoordinateSelections}/>
+		  <ParallelCoordinates parameter_columns={this.state.parameter_columns} csvData={this.state.csvData} selectionUpdater={this.updateParallelCoordinateSelections}/>
 	          <div class="Address">
 		    <InputGroup className="mb-3">
 	    		<Form.Control size="sm" type="text" placeholder="Enter Database Serving Address"
