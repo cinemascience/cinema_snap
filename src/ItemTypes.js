@@ -6,6 +6,7 @@ export default {
         PCHART: 'pChart',
         PDOTCHART: 'pdotChart',
         PDOTDOTCHART: 'pdotdotChart',
+        EOSFIT0CHART: 'eosfit0Chart',
 	LATTICEVSTIME: 'latticeVSTime',
 	CONTOURDIAGRAM: 'contourDiagram',
 }

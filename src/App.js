@@ -34,7 +34,8 @@ class App extends React.Component {
 		pvTraces: [],
                 pTraces: [],
                 pdotTraces: [],
-                pdotdotTrace: [],
+                pdotdotTraces: [],
+                eosfit0Traces: [],
 		ltTraces: [],
 		conTraces: [],
 		finalDataset : {
@@ -43,6 +44,7 @@ class App extends React.Component {
                         pTraces: [],
                         pdotTraces: [],
                         pdotdotTrace: [],
+                        eosfit0Traces: [],
 			ltTraces: [],
 			conTraces: [],
 		},
@@ -346,6 +348,27 @@ class App extends React.Component {
                         });
                         }
 
+                       //process eos fit 0 pressure vs volume
+                        var eosfit0_traces = [];
+                        if(typeof this.state.csvData != "undefined"){
+                        Papa.parse("http://" + this.state.connectAddress + "/" + this.state.csvData[0]["FILE_eosfit0_path"], {
+                                download: true,
+                                complete: function(results) {
+                                        var x_array = []
+                                        var y_array = []
+                                        for (const line in results["data"]) {
+            if(results["data"][line][0] === ""){
+              continue;
+            }
+                                                x_array.push(Number(results["data"][line][0]));
+                                                y_array.push(Number(results["data"][line][1]));
+                                        }
+                                        var trace = {x: x_array, y: y_array, type: 'scatter'}
+                                        eosfit0_traces.push(trace)
+                                }
+                        });
+                        }
+
 			//process lattice vs time data
 			var lt_traces = []
 			if(typeof this.state.csvData != "undefined"){
@@ -398,7 +421,7 @@ class App extends React.Component {
 			}
 
 			this.setState({
-				finalDataset : {"xyTraces":xy_traces, "pvTraces":pv_traces, "ltTraces":lt_traces, "conTraces": con_traces, "pTraces":p_traces, "pdotTraces":pdot_traces, "pdotdotTraces":pdotdot_traces},
+				finalDataset : {"xyTraces":xy_traces, "pvTraces":pv_traces, "ltTraces":lt_traces, "conTraces": con_traces, "pTraces":p_traces, "pdotTraces":pdot_traces, "pdotdotTraces":pdotdot_traces, "eosfit0Traces": eosfit0_traces},
 			});
 
 			this.intervalID = setTimeout(
@@ -462,6 +485,7 @@ function GridSelector() {
                 <DataView type="pChart" name="Pressure Fit vs Frame"/>
                 <DataView type="pdotChart" name="dPressure Fit vs Frame"/>
                 <DataView type="pdotdotChart" name="d2Pressure Fit vs Frame"/>
+                <DataView type="eosfit0Chart" name="EOS Pressure vs Volume"/>
 		</div>
 	);
 }

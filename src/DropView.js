@@ -19,6 +19,7 @@ function DropView(props){
                         ItemTypes.PCHART,
                         ItemTypes.PDOTCHART,
                         ItemTypes.PDOTDOTCHART,
+                        ItemTypes.EOSFIT0CHART,
 			ItemTypes.LATTICEVSTIME,
 			ItemTypes.CONTOURDIAGRAM],
 		drop: item => dropped(item, props.cls, props.viewUpdater, props.selectedViews),
@@ -31,8 +32,8 @@ function DropView(props){
 			
 	switch(props.selectedViews[props.cls]){
 		case "image":
-			let img_width = 1600;
-			let img_height = 1600;
+			let img_width = 640;
+			let img_height = 480;
 			if(typeof props.csvData === "undefined" || props.finalDataset === "undefined"){
 				return (
 					<div
@@ -79,7 +80,7 @@ function DropView(props){
 								sizex: img_width,
 								sizey: img_height,
 								layer: "below",
-								sizing: "stretch",
+								sizing: 100,
 							}	
 							],
 							xaxis: {
@@ -449,6 +450,79 @@ function DropView(props){
 					/>
 				</div>
 			);
+
+                case "eosfit0Chart":
+                        if(typeof props.csvData === "undefined" || props.finalDataset.eosfit0Traces.length === 0){
+                                return (
+                                        <div
+                                        ref={drop}
+                                        style={{
+                                                backgroundColor: isOver ? "green" : "cyan",
+                                        }}
+                                        className={props.cls}
+                                        >
+                                                No database has been connected
+                                        </div>
+                                );
+                        }
+
+                        return (
+
+                                <div
+                                ref={drop}
+                                style={{
+                                        backgroundColor: isOver ? "green" : "cyan",
+                                }}
+                                className={props.cls}
+                                >
+                                        <Plot
+                                                data={props.finalDataset.eosfit0Traces}
+                                                layout={ {title: 'EOS Pressure vs Volume',
+                                                                autosize: true,
+                                                                datarevision: data_revision,
+                                                                uirevision: 1,
+                                                                margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},
+                                                                  xaxis: {
+                                                                    title: {
+                                                                      text: '<b>Volume</b>',
+                                                                      font: {
+                                                                        family: 'Courier New, monospace',
+                                                                        size: 18,
+                                                                        color: '#7f7f7f'
+                                                                      }
+                                                                    },
+                                                                  },
+                                                                  yaxis: {
+                                                                    title: {
+                                                                      text: '<b>Pressure</b>',
+                                                                      font: {
+                                                                        family: 'Courier New, monospace',
+                                                                        size: 18,
+                                                                        color: '#7f7f7f'
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                shapes: [
+                                                                        {
+                                                                                type: 'line',
+                                                                                x0: props.finalDataset.eosfit0Traces[0].x[props.selectedData],
+                                                                                x1: props.finalDataset.eosfit0Traces[0].x[props.selectedData],
+                                                                                y0: Math.min(...props.finalDataset.eosfit0Traces[0].y),
+                                                                                y1: Math.max(...props.finalDataset.eosfit0Traces[0].y),
+                                                                                line: {
+                                                                                        color: 'rgb(0, 255, 0)',
+                                                                                        width: 4,
+                                                                                        dash: 'dot'
+                                                                                }
+                                                                        }
+                                                                ]
+                                                } }
+                                                useResizeHandler={true}
+                                                style={ {height:"100%",width:"100%"} }
+                                                onClick={(e) => props.selectedDataUpdater(e.points[0].pointNumber)}
+                                        />
+                                </div>
+                        );
 
 		case "latticeVSTime":
 			if(typeof props.csvData === "undefined" || props.finalDataset.ltTraces.length === 0){
