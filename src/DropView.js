@@ -65,6 +65,11 @@ function DropView(props){
 							}
 						]}
 						layout={{
+							title: 'X-ray Diffraction Image',
+							datarevision: data_revision,
+							uirevision:1,
+							font: {size: 18, color: 'black'},	
+							margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},
 							autosize: true,
 							images:[
 							{
@@ -90,7 +95,6 @@ function DropView(props){
 								visible: false,
 								scaleanchor: "x",
 							},
-							margin: {"l":0, "r":0, "t":0, "b":0},
 						}}
 						useResizeHandler={true}
 						style={ {height:"100%",width:"100%"} }
@@ -123,21 +127,24 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.xyTraces}
-						layout={ {title: 'Intensity vs Angle',
+						layout={ {title: 'Intensity vs. Angle Plot',
 								autosize: true,
 								datarevision: props.dataRevision,
 								uirevision: 1,
 								hovermode: 'closest',
-								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
+								font: { size: 18, color: 'black'},
+								margin: {l: 75, r: 50, b: 50, t: 70, pad: 4},
 								  xaxis: {
 								    title: {
-								      text: '<b>2&#952; (deg.)</b>',
+								      text: '<b>2&#952; (&deg;)</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
+									color: 'black'
+								      },
 								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  },
 								  yaxis: {
 								    title: {
@@ -145,9 +152,11 @@ function DropView(props){
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
-								    }
+									color: 'black'
+								      },
+								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  }
 						} }
 						useResizeHandler={true}
@@ -185,20 +194,23 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.pvTraces}
-						layout={ {title: 'Pressure vs Frame',
+						layout={ {title: 'Pressure vs. Frame Plot',
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1, 
-								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
+								font: { size: 18, color: 'black'},
+								margin: {l: 75, r: 50, b: 50, t: 70, pad: 4},
 								  xaxis: {
 								    title: {
 								      text: '<b>Frame</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
+									color: 'black'
+								      },
 								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  },
 								  yaxis: {
 								    title: {
@@ -206,9 +218,11 @@ function DropView(props){
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
-								    }
+									color: 'black'
+								      },
+								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  },
 								shapes: [
 									{
@@ -258,20 +272,23 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.pTraces}
-						layout={ {title: 'Pressure Fit vs Frame',
+						layout={ {title: 'Pressure Fit vs. Frame',
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1, 
-								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
+								font: { size: 18, color: 'black'},
+								margin: {l: 75, r: 50, b: 50, t: 70, pad: 4},
 								  xaxis: {
 								    title: {
 								      text: '<b>Frame</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
+									color: 'black'
+								      },
 								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  },
 								  yaxis: {
 								    title: {
@@ -279,9 +296,11 @@ function DropView(props){
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
-								    }
+									color: 'black'
+								      },
+								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  },
 								shapes: [
 									{
@@ -331,20 +350,23 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.pdotTraces}
-						layout={ {title: 'Pressure Fit 1st Derivative vs Frame',
+						layout={ {title: 'Pressure Fit 1st Derivative vs. Frame',
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1, 
-								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
+								font: { size: 18, color: 'black'},
+								margin: {l: 75, r: 50, b: 50, t: 70, pad: 4},
 								  xaxis: {
 								    title: {
 								      text: '<b>Frame</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
+									color: 'black'
+								      },
 								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  },
 								  yaxis: {
 								    title: {
@@ -352,9 +374,11 @@ function DropView(props){
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
-								    }
+									color: 'black'
+								      },
+								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  },
 								shapes: [
 									{
@@ -404,20 +428,23 @@ function DropView(props){
 				>
 					<Plot
 						data={props.finalDataset.pdotdotTraces}
-						layout={ {title: 'Pressure Fit 2nd Derivative vs Frame',
+						layout={ {title: 'Pressure Fit 2nd Derivative vs. Frame',
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1, 
-								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
+								font: { size: 18, color: 'black'},
+								margin: {l: 75, r: 50, b: 50, t: 70, pad: 4},
 								  xaxis: {
 								    title: {
 								      text: '<b>Frame</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
+									color: 'black'
+								      },
 								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  },
 								  yaxis: {
 								    title: {
@@ -425,9 +452,11 @@ function DropView(props){
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
-								    }
+									color: 'black'
+								      },
+								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  },
 								shapes: [
 									{
@@ -477,20 +506,23 @@ function DropView(props){
                                 >
                                         <Plot
                                                 data={props.finalDataset.eosfit0Traces}
-                                                layout={ {title: 'EOS Pressure vs Volume',
+                                                layout={ {title: 'EOS Pressure vs. Volume',
                                                                 autosize: true,
                                                                 datarevision: data_revision,
                                                                 uirevision: 1,
-                                                                margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},
+								font: { size: 18, color: 'black'},
+								margin: {l: 75, r: 50, b: 50, t: 70, pad: 4},
                                                                   xaxis: {
                                                                     title: {
                                                                       text: '<b>Volume</b>',
                                                                       font: {
                                                                         family: 'Courier New, monospace',
                                                                         size: 18,
-                                                                        color: '#7f7f7f'
-                                                                      }
+                                                                        color: 'black'
+                                                                      },
                                                                     },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
                                                                   },
                                                                   yaxis: {
                                                                     title: {
@@ -498,9 +530,11 @@ function DropView(props){
                                                                       font: {
                                                                         family: 'Courier New, monospace',
                                                                         size: 18,
-                                                                        color: '#7f7f7f'
-                                                                      }
-                                                                    }
+                                                                        color: 'black'
+                                                                      },
+                                                                    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
                                                                   },
                                                                 shapes: [
                                                                         {
@@ -554,16 +588,19 @@ function DropView(props){
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1,
-								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},		
+								font: { size: 18, color: 'black'},
+								margin: {l: 75, r: 50, b: 50, t: 70, pad: 4},
 								  xaxis: {
 								    title: {
 								      text: '<b>Frame</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
+									color: 'black'
+								      },
 								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  },
 								  yaxis: {
 								    title: {
@@ -571,9 +608,11 @@ function DropView(props){
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
-								    }
+									color: 'black'
+								      },
+								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  },
 								shapes: [
 									{
@@ -622,20 +661,23 @@ function DropView(props){
 					<Plot
 						data={props.finalDataset.conTraces}
 						layout={ 
-							{title: 'Intensity vs Frame Contour Diagram',
+							{title: 'Intensity vs. Frame Contour Plot',
 								autosize: true,
 								datarevision: data_revision,
 								uirevision: 1,
-								margin: {l: 50, r: 50, b: 50, t: 70, pad: 4},
+								font: { size: 18, color: 'black'},
+								margin: {l: 75, r: 50, b: 50, t: 70, pad: 4},
 								  xaxis: {
 								    title: {
-								      text: '<b>2&#952; (deg.)</b>',
+								      text: '<b>Scattering Angle, 2&#952; (&deg;)</b>',
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
+									color: 'black'
+								      },
 								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  },
 								  yaxis: {
 								    title: {
@@ -643,9 +685,11 @@ function DropView(props){
 								      font: {
 									family: 'Courier New, monospace',
 									size: 18,
-									color: '#7f7f7f'
-								      }
-								    }
+									color: 'black'
+								      },
+								    },
+								    gridcolor: 'darkgray',
+								    gridwidth: 2
 								  },
 								shapes: [
 									{

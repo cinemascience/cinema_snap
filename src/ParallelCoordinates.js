@@ -27,7 +27,8 @@ class ParallelCoordinates extends React.PureComponent {
 		var trace = {
 			type: 'parcoords',
 			line: {
-				color: 'blue'
+				color: 'blue',
+				width: 4
 			},
                         dimensions: []
                 };
@@ -36,18 +37,22 @@ class ParallelCoordinates extends React.PureComponent {
                 for (const idx in this.props.parameter_columns){
                     var key = this.props.parameter_columns[idx]
                     trace["dimensions"].push({label: key,
-                                              values: parameter_arrays[key]})
+                                              values: parameter_arrays[key],
+					      font: { size: 18, color: 'black'}})
                 }
 
 		return (
 			<div className="ParallelCoordinate">
 				<Plot
 					data={[trace]}
-					layout={ {title: 'Parallel Coordinate Plot',
+					layout={ {title: 'Parallel Coordinates Plot',
 							autosize: true,
 							uirevision: 1,
 							selectionrevision: 1,
-							margin: {l: 50, r: 50, b: 30, t: 80, pad: 4},
+							margin: {l: 50, r: 50, b: 40, t: 90, pad: 4},
+							font: {
+								size: 18,
+								color: 'black'},
 							y: 0
 					} }
 					useResizeHandler={true}

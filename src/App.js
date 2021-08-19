@@ -446,10 +446,10 @@ class App extends React.Component {
 		  <ParallelCoordinates parameter_columns={this.state.parameter_columns} csvData={this.state.csvData} selectionUpdater={this.updateParallelCoordinateSelections}/>
 	          <div class="Address">
 		    <InputGroup className="mb-3">
-	    		<Form.Control size="sm" type="text" placeholder="Enter Database Serving Address"
+	    		<Form.Control size="lg" type="text" placeholder="Enter Database Serving Address"
 		    		onChange={this.updateAddress}/>
 		    	<InputGroup.Append>
-			    <Button variant="primary" size="sm" type="button" onClick={this.connectToAddress}>
+			    <Button variant="primary" size="lg" type="button" onClick={this.connectToAddress}>
 				Connect
 			    </Button>
 		        </InputGroup.Append>
@@ -476,16 +476,16 @@ class App extends React.Component {
 {/* The data view selector box */}
 function GridSelector() {
 	return (
-		<div className="GridSelector">
-                <DataView type="image" name="XRD Image"/>
-		<DataView type="xyGraph" name="Intensity vs Angle"/>
-                <DataView type="contourDiagram" name="Contour Diagram"/>
-                <DataView type="latticeVSTime" name="Lattice vs Frame"/>
-		<DataView type="pvChart" name="Pressure vs Frame"/>
-                <DataView type="pChart" name="Pressure Fit vs Frame"/>
-                <DataView type="pdotChart" name="dPressure Fit vs Frame"/>
-                <DataView type="pdotdotChart" name="d2Pressure Fit vs Frame"/>
-                <DataView type="eosfit0Chart" name="EOS Pressure vs Volume"/>
+		<div className="GridSelector" style={{font:{size: 20}}}>
+                <DataView type="image" name="X-ray Diffraction Image"/>
+		<DataView type="xyGraph" name="Intensity vs. Angle"/>
+                <DataView type="contourDiagram" name="Contour Plot"/>
+                <DataView type="latticeVSTime" name="Lattice vs. Frame"/>
+		<DataView type="pvChart" name="Pressure vs. Frame"/>
+                <DataView type="pChart" name="Pressure Fit vs. Frame"/>
+                <DataView type="pdotChart" name="dPressure Fit vs. Frame"/>
+                <DataView type="pdotdotChart" name="d2Pressure Fit vs. Frame"/>
+                <DataView type="eosfit0Chart" name="EOS Pressure vs. Volume"/>
 		</div>
 	);
 }
@@ -493,7 +493,7 @@ function GridSelector() {
 {/* Drop down button to select different templates */}
 function GridTemplateButton(props) {
 	return (
-		<DropdownButton id="dropdown-basic-button" title="View Selector" size="sm">
+		<DropdownButton id="dropdown-basic-button" title="View Selector" size="lg">
   			<Dropdown.Item name="One and Two" onClick={props.layoutUpdater}>One and Two</Dropdown.Item>
   			<Dropdown.Item name="One and One Horizontal" onClick={props.layoutUpdater}>One and One Horizontal</Dropdown.Item>
   			<Dropdown.Item name="One and One Vertical" onClick={props.layoutUpdater}>One and One Vertical</Dropdown.Item>

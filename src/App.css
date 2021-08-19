@@ -2,7 +2,7 @@
   text-align: center;
   display: grid;
   grid-template-columns: 80% 20%;
-  grid-template-rows: 17% 3% 80%;
+  grid-template-rows: 22% 8% 70%;
   background-color: #29335C;
   height: 100vh;
 }
